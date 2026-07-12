@@ -34,6 +34,15 @@ npm start
 
 Requires Node 18.18+ (Node 20+ recommended). The server process must have outbound network access to the monitored services.
 
+### Docker (fastest deploy)
+
+```bash
+# .env.local must exist with DASHBOARD_PASSWORD (see Security below)
+docker compose up -d --build
+```
+
+Serves on port 3000. Health history and UI-added services persist in the `dashboard-data` volume; secrets are injected at runtime from `.env.local` (never baked into the image). Update with `git pull && docker compose up -d --build`.
+
 ## Security
 
 Set `DASHBOARD_PASSWORD` (e.g. in `.env.local`) to enable the built-in login gate — session cookies (HMAC-signed, HttpOnly), per-IP rate limiting, and a logout in 设置 → 安全. Without it the dashboard and its API are open to anyone who can reach the server. Full hardening guide (HTTPS, VPN/Tailscale, Cloudflare Access, headers): see **[ADMIN-GUIDE.md](ADMIN-GUIDE.md)**.

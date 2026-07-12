@@ -1,0 +1,21 @@
+services:
+  dashboard:
+    build: .
+    image: wentao-command-center:latest
+    container_name: command-center
+    restart: unless-stopped
+    ports:
+      # host:container — put a TLS reverse proxy (Caddy/Nginx) or Tailscale in
+      # front instead of exposing this port to the internet directly
+      - "3199:3000"
+    env_file:
+      # DASHBOARD_PASSWORD / AUTH_SECRET / AUTH_SESSION_HOURS — required for login
+      - .env.local
+    volumes:
+      # health history + services added in the UI survive restarts/rebuilds
+      - dashboard-data:/app/data
+    # environment:
+    #   - TZ=America/Toronto
+
+volumes:
+  dashboard-data:

@@ -60,6 +60,24 @@ Then restart the server. What you get:
 > `-join ((48..57)+(65..90)+(97..122) | Get-Random -Count 32 | % {[char]$_})`
 > or on Linux/macOS: `openssl rand -base64 32`
 
+### Deploying with Docker (recommended)
+
+With `.env.local` in place, the whole stack deploys in one command:
+
+```bash
+docker compose up -d --build      # build + start, serves on :3000
+docker compose logs -f dashboard  # watch logs
+docker compose down               # stop (data volume is kept)
+```
+
+What the setup gives you:
+
+- **Multi-stage image** (Node 22 alpine, Next.js standalone output) running as a non-root user.
+- **Secrets stay out of the image** — `.env.local` is docker-ignored and injected only at runtime via `env_file`; rebuilds never bake the password in.
+- **Persistent data** — `data/store.json` lives in the named volume `dashboard-data`, so history and UI-added services survive restarts, rebuilds, and image upgrades. (`docker compose down -v` is the only thing that erases it.)
+- **Container healthcheck** against the public `/api/auth/status` endpoint — `docker ps` shows `healthy`/`unhealthy`, and orchestrators can auto-restart on failure.
+- To change the host port, edit `ports:` in `docker-compose.yml` (e.g. `"8080:3000"`).
+
 ### Layer 2 (required if reachable from outside): HTTPS
 
 Never send the password over plain HTTP across a network you don't own. Put a reverse proxy with automatic TLS in front. Simplest is **Caddy** (2 lines):

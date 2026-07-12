@@ -1,0 +1,22 @@
+# dependencies / build output (rebuilt inside the image)
+node_modules
+.next
+out
+
+# runtime data — belongs to the volume, never the image
+data
+
+# secrets — injected at runtime via compose env_file, never baked in
+.env*
+
+# tooling / misc
+.git
+.idea
+.claude
+*.tsbuildinfo
+next-env.d.ts
+README.md
+ADMIN-GUIDE.md
+Dockerfile
+docker-compose.yml
+.dockerignore
