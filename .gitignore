@@ -1,0 +1,18 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+
+# runtime data store (health history, user-added services)
+/data/
+
+# misc
+.DS_Store
+*.pem
+*.tsbuildinfo
+
+# env
+.env*
