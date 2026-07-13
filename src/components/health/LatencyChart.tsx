@@ -17,7 +17,7 @@ import { useDashboard } from "@/components/dashboard/DashboardProvider";
 import { ChartCard, ChartTooltip } from "./ChartCard";
 
 const AXIS_TICK = { fontSize: 11, fill: "var(--color-ink-3)" };
-const GRID_STROKE = "rgb(30 41 75 / 0.08)";
+const GRID_STROKE = "var(--color-grid)";
 const SERIES = [
   { key: "global", color: "var(--color-chart-1)", label: t.comparison.globalRoute },
   { key: "china", color: "var(--color-chart-2)", label: t.comparison.chinaRoute },
@@ -113,7 +113,7 @@ export function LatencyChart() {
                 activeDot={{
                   r: 4,
                   strokeWidth: 2,
-                  stroke: "white",
+                  stroke: "var(--color-surface)",
                   fill: s.color,
                 }}
                 isAnimationActive={!reduced}

@@ -41,18 +41,20 @@ export function Dashboard() {
     <MotionConfig reducedMotion={settings.reduceMotion ? "always" : "user"}>
       <a
         href="#main"
-        className="sr-only z-[80] rounded-xl bg-accent px-4 py-2 text-sm font-medium text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        className="sr-only z-[80] rounded-xl border border-accent/50 bg-surface px-4 py-2 text-sm font-medium text-ink focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
       >
         {t.app.skipToContent}
       </a>
 
-      {/* fixed ambient scenery */}
+      {/* fixed ambient environment */}
       <div className="ambient" aria-hidden>
-        <div className="ambient-blob ambient-blob--indigo" />
-        <div className="ambient-blob ambient-blob--teal" />
-        <div className="ambient-blob ambient-blob--violet" />
+        <div className="ambient-glow" />
+        <div className="ambient-blob ambient-blob--one" />
+        <div className="ambient-blob ambient-blob--two" />
+        <div className="ambient-blob ambient-blob--three" />
         <div className="ambient-grid" />
         <div className="ambient-noise" />
+        <div className="ambient-vignette" />
       </div>
 
       <div className="relative z-10">

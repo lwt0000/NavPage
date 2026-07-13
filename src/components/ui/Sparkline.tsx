@@ -39,7 +39,14 @@ export function Sparkline({
         strokeLinejoin="round"
         opacity={0.65}
       />
-      <circle cx={last[0]} cy={last[1]} r={2.8} fill={accent} stroke="white" strokeWidth={1.5} />
+      <circle
+        cx={last[0]}
+        cy={last[1]}
+        r={2.8}
+        fill={accent}
+        stroke="var(--color-surface)"
+        strokeWidth={1.5}
+      />
     </svg>
   );
 }

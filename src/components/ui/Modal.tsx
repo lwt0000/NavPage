@@ -41,7 +41,7 @@ export function Modal({ open, onClose, title, children, wide }: ModalProps) {
           exit={{ opacity: 0 }}
         >
           <motion.div
-            className="absolute inset-0 bg-ink/25 backdrop-blur-md"
+            className="absolute inset-0 bg-scrim backdrop-blur-md"
             onClick={onClose}
             aria-hidden
             initial={{ opacity: 0 }}
@@ -54,7 +54,7 @@ export function Modal({ open, onClose, title, children, wide }: ModalProps) {
             role="dialog"
             aria-modal="true"
             aria-label={title}
-            className={`glass relative w-full ${wide ? "max-w-2xl" : "max-w-md"} max-h-[86dvh] overflow-y-auto p-5 sm:p-6 outline-none`}
+            className={`glass-3 relative w-full ${wide ? "max-w-2xl" : "max-w-md"} max-h-[86dvh] overflow-y-auto p-5 sm:p-6 outline-none`}
             initial={{ opacity: 0, y: 26, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 18, scale: 0.98 }}

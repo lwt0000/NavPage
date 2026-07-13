@@ -95,7 +95,7 @@ export function QuickActions() {
   return (
     <section aria-label={t.actions.quickActions} className="glass p-5">
       <div className="mb-3.5 flex items-center gap-2.5">
-        <div className="grid size-9 place-items-center rounded-xl border border-white/75 bg-white/55 text-accent shadow-sm">
+        <div className="grid size-9 place-items-center rounded-xl border border-line-strong bg-soft text-ink-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
           <Zap size={16} aria-hidden />
         </div>
         <h2 className="text-sm font-semibold tracking-wide">
@@ -111,7 +111,7 @@ export function QuickActions() {
             className={`group flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-xs font-medium transition-all duration-200 hover:-translate-y-px ${
               active
                 ? "border-accent/40 bg-accent-soft text-ink"
-                : "border-white/70 bg-white/45 text-ink-2 shadow-sm hover:bg-white/85 hover:text-ink"
+                : "border-line bg-soft text-ink-2 hover:border-line-strong hover:bg-soft-2 hover:text-ink"
             }`}
           >
             <Icon

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LogOut, ShieldAlert, ShieldCheck } from "lucide-react";
+import { LogOut, Moon, ShieldAlert, ShieldCheck, Sun } from "lucide-react";
 import { t } from "@/locales/zh-CN";
 import { useDashboard } from "@/components/dashboard/DashboardProvider";
 import { Modal } from "@/components/ui/Modal";
@@ -71,12 +71,12 @@ function Switch({
       aria-label={label}
       onClick={() => onChange(!checked)}
       className={`relative h-6 w-11 shrink-0 rounded-full border transition-colors ${
-        checked ? "border-accent bg-accent" : "border-ink/10 bg-ink/15"
+        checked ? "border-accent bg-accent" : "border-line-strong bg-ink/10"
       }`}
     >
       <span
-        className={`absolute top-0.5 size-4.5 rounded-full bg-white shadow-md transition-all ${
-          checked ? "left-[1.4rem]" : "left-0.5"
+        className={`absolute top-0.5 size-4.5 rounded-full shadow-md transition-all ${
+          checked ? "left-[1.4rem] bg-canvas" : "left-0.5 bg-ink"
         }`}
         aria-hidden
       />
@@ -105,6 +105,47 @@ export function SettingsPanel() {
       title={t.settingsPanel.title}
     >
       <div className="space-y-6">
+        {/* appearance */}
+        <section>
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-ink-3">
+            {t.settingsPanel.appearanceSection}
+          </h3>
+          <p className="mt-1.5 text-xs leading-relaxed text-ink-2">
+            {t.settingsPanel.appearanceDescription}
+          </p>
+          <div
+            className="mt-3 grid grid-cols-2 gap-2"
+            role="radiogroup"
+            aria-label={t.settingsPanel.appearanceSection}
+          >
+            {(
+              [
+                { value: "dark", label: t.settingsPanel.themeDark, icon: Moon },
+                { value: "light", label: t.settingsPanel.themeLight, icon: Sun },
+              ] as const
+            ).map(({ value, label, icon: Icon }) => {
+              const selected = settings.theme === value;
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected}
+                  onClick={() => updateSettings({ theme: value })}
+                  className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-medium transition-colors ${
+                    selected
+                      ? "border-accent/50 bg-accent-soft text-ink"
+                      : "border-line bg-soft text-ink-2 hover:border-line-strong hover:bg-soft-2"
+                  }`}
+                >
+                  <Icon size={13} aria-hidden />
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
         {/* refresh interval */}
         <section>
           <h3 className="text-xs font-semibold uppercase tracking-wider text-ink-3">
@@ -130,7 +171,7 @@ export function SettingsPanel() {
                   className={`rounded-xl border px-3 py-2.5 text-xs font-medium transition-colors ${
                     selected
                       ? "border-accent/50 bg-accent-soft text-ink"
-                      : "border-white/70 bg-white/45 text-ink-2 shadow-sm hover:bg-white/80"
+                      : "border-line bg-soft text-ink-2 hover:border-line-strong hover:bg-soft-2"
                   }`}
                 >
                   {label}
@@ -189,7 +230,7 @@ export function SettingsPanel() {
               .map(({ key, label, icon: Icon, count }) => (
                 <li
                   key={key}
-                  className="flex items-center gap-2.5 rounded-xl border border-white/70 bg-white/45 px-3 py-2.5 text-xs shadow-sm"
+                  className="flex items-center gap-2.5 rounded-xl border border-line bg-soft px-3 py-2.5 text-xs"
                 >
                   <Icon size={14} className="text-ink-3" aria-hidden />
                   <span className="flex-1 font-medium">{label}</span>

@@ -43,7 +43,7 @@ function RoutePanel({
   return (
     <div
       className={`well relative flex flex-col gap-3 p-4 transition-shadow ${
-        recommended ? "ring-1 ring-accent/40 shadow-[0_8px_28px_rgba(91,103,240,0.18)]" : ""
+        recommended ? "ring-1 ring-accent/45 shadow-[0_0_28px_var(--color-accent-soft)]" : ""
       }`}
     >
       <div className="flex items-center gap-2.5">
@@ -81,9 +81,9 @@ function RoutePanel({
         <StatusBadge status={service.status} size="sm" />
       </div>
 
-      {/* latency comparison bar (thin mark, shared scale) */}
+      {/* latency comparison bar (thin mark, shared scale, slow flow sheen) */}
       <div
-        className="h-1.5 overflow-hidden rounded-full bg-ink/8"
+        className="route-track h-1.5 rounded-full bg-ink/8"
         title={`${t.comparison.currentLatency}：${formatLatency(service.latencyMs)}`}
         aria-hidden
       >
@@ -117,7 +117,7 @@ function RoutePanel({
       <button
         type="button"
         onClick={() => openService(service)}
-        className="mt-1 self-start rounded-lg border border-white/70 bg-white/50 px-3 py-1.5 text-[11px] font-medium text-ink-2 shadow-sm transition-colors hover:bg-white/85 hover:text-ink"
+        className="mt-1 self-start rounded-lg border border-line bg-soft px-3 py-1.5 text-[11px] font-medium text-ink-2 transition-colors hover:border-line-strong hover:bg-soft-2 hover:text-ink"
       >
         {t.actions.open}
       </button>
@@ -148,7 +148,7 @@ export function RouteComparison() {
   return (
     <section id="route-comparison" aria-label={t.comparison.title} className="glass p-5 sm:p-6">
       <div className="mb-4 flex flex-wrap items-center gap-3">
-        <div className="grid size-9 place-items-center rounded-xl border border-white/75 bg-white/55 text-accent shadow-sm">
+        <div className="grid size-9 place-items-center rounded-xl border border-line-strong bg-soft text-ink-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
           <ArrowLeftRight size={16} aria-hidden />
         </div>
         <div className="min-w-0 flex-1">
@@ -159,7 +159,7 @@ export function RouteComparison() {
               : `Emby · ${t.comparison.globalRoute} / ${t.comparison.chinaRoute}`}
           </p>
         </div>
-        <span className="rounded-full border border-white/70 bg-white/50 px-3 py-1.5 text-xs font-medium text-ink-2 shadow-sm">
+        <span className="rounded-full border border-line bg-soft px-3 py-1.5 text-xs font-medium text-ink-2">
           {t.comparison.recommendation[headline]}
         </span>
       </div>

@@ -6,7 +6,7 @@ import { Eye, EyeOff, LockKeyhole, ShieldCheck } from "lucide-react";
 import { t } from "@/locales/zh-CN";
 
 const inputCls =
-  "w-full rounded-xl border border-line bg-well px-3 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/60";
+  "w-full rounded-xl border border-line-strong bg-well px-3 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/60 focus:bg-soft";
 
 export default function LoginPage() {
   const [password, setPassword] = useState("");
@@ -68,11 +68,13 @@ export default function LoginPage() {
   return (
     <>
       <div className="ambient" aria-hidden>
-        <div className="ambient-blob ambient-blob--indigo" />
-        <div className="ambient-blob ambient-blob--teal" />
-        <div className="ambient-blob ambient-blob--violet" />
+        <div className="ambient-glow" />
+        <div className="ambient-blob ambient-blob--one" />
+        <div className="ambient-blob ambient-blob--two" />
+        <div className="ambient-blob ambient-blob--three" />
         <div className="ambient-grid" />
         <div className="ambient-noise" />
+        <div className="ambient-vignette" />
       </div>
 
       <main className="relative z-10 flex min-h-dvh items-center justify-center px-4">
@@ -126,7 +128,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={!password || submitting}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-[0_6px_18px_rgba(91,103,240,0.4)] transition-all hover:bg-accent/90 disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-accent/50 bg-accent-soft px-5 py-2.5 text-sm font-semibold text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-all hover:border-accent/70 hover:bg-accent/25 hover:shadow-[0_4px_22px_var(--color-accent-glow),inset_0_1px_0_rgba(255,255,255,0.12)] disabled:opacity-60"
             >
               <LockKeyhole size={15} aria-hidden />
               {submitting ? t.auth.submitting : t.auth.submit}

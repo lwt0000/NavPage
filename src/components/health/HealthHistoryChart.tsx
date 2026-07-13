@@ -17,7 +17,7 @@ import { useDashboard } from "@/components/dashboard/DashboardProvider";
 import { ChartCard, ChartTooltip } from "./ChartCard";
 
 const AXIS_TICK = { fontSize: 11, fill: "var(--color-ink-3)" };
-const GRID_STROKE = "rgb(30 41 75 / 0.08)";
+const GRID_STROKE = "var(--color-grid)";
 
 export function HealthHistoryChart() {
   const { snapshot } = useDashboard();
@@ -84,7 +84,7 @@ export function HealthHistoryChart() {
               activeDot={{
                 r: 4,
                 strokeWidth: 2,
-                stroke: "white",
+                stroke: "var(--color-surface)",
                 fill: "var(--color-chart-1)",
               }}
               isAnimationActive={!reduced}

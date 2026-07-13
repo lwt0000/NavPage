@@ -34,14 +34,34 @@ interface GaugeProps {
   size?: number;
 }
 
-/** Hero health ring — the one hero figure of the dashboard. */
-export function OverallHealthGauge({ score, status, size = 176 }: GaugeProps) {
+const SEGMENTS = 44;
+/* 270° instrument arc, opening at the bottom */
+const START_ANGLE = 135;
+const SWEEP = 270;
+
+/** Segmented radial instrument — the one hero figure of the dashboard. */
+export function OverallHealthGauge({ score, status, size = 184 }: GaugeProps) {
   const display = useAnimatedScore(score);
-  const stroke = 11;
-  const r = (size - stroke - 6) / 2;
-  const c = 2 * Math.PI * r;
   const color = scoreColor(score);
-  const offset = c * (1 - display / 100);
+  const cx = size / 2;
+  const cy = size / 2;
+  const rOuter = size / 2 - 5;
+  const rInner = rOuter - 11;
+  const lit = Math.round((display / 100) * SEGMENTS);
+
+  const ticks = Array.from({ length: SEGMENTS }, (_, i) => {
+    const angle = START_ANGLE + (i / (SEGMENTS - 1)) * SWEEP;
+    const rad = (angle * Math.PI) / 180;
+    const cos = Math.cos(rad);
+    const sin = Math.sin(rad);
+    return {
+      x1: cx + rInner * cos,
+      y1: cy + rInner * sin,
+      x2: cx + rOuter * cos,
+      y2: cy + rOuter * sin,
+      on: i < lit,
+    };
+  });
 
   return (
     <div
@@ -49,35 +69,38 @@ export function OverallHealthGauge({ score, status, size = 176 }: GaugeProps) {
       role="img"
       aria-label={t.a11y.healthGauge(score)}
     >
-      <svg width={size} height={size} className="-rotate-90">
-        {/* unfilled track: a lighter step of the fill's own hue */}
+      <svg width={size} height={size}>
+        {/* soft center glow */}
         <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={r}
-          fill="none"
-          stroke={`color-mix(in oklab, ${color} 16%, transparent)`}
-          strokeWidth={stroke}
+          cx={cx}
+          cy={cy}
+          r={rInner - 14}
+          fill={color}
+          opacity={0.09}
+          style={{ filter: "blur(18px)", transition: "fill 0.4s ease" }}
         />
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={r}
-          fill="none"
-          stroke={color}
-          strokeWidth={stroke}
-          strokeLinecap="round"
-          strokeDasharray={c}
-          strokeDashoffset={offset}
-          style={{
-            filter: `drop-shadow(0 0 14px color-mix(in oklab, ${color} 45%, transparent))`,
-            transition: "stroke 0.4s ease",
-          }}
-        />
+        {ticks.map((tick, i) => (
+          <line
+            key={i}
+            x1={tick.x1}
+            y1={tick.y1}
+            x2={tick.x2}
+            y2={tick.y2}
+            stroke={tick.on ? color : "var(--color-grid)"}
+            strokeWidth={3}
+            strokeLinecap="round"
+            style={{
+              transition: "stroke 0.3s ease",
+              filter: tick.on
+                ? `drop-shadow(0 0 4px color-mix(in oklab, ${color} 55%, transparent))`
+                : undefined,
+            }}
+          />
+        ))}
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5">
         <div className="flex items-baseline">
-          <span className="text-5xl font-semibold leading-none tracking-tight">
+          <span className="text-5xl font-semibold leading-none tracking-tight tabular-nums">
             {display}
           </span>
           <span className="ml-0.5 text-lg font-medium text-ink-2">%</span>
@@ -102,7 +125,7 @@ export function MiniHealthRing({ score, size = 38 }: { score: number; size?: num
         cy={size / 2}
         r={r}
         fill="none"
-        stroke={`color-mix(in oklab, ${color} 16%, transparent)`}
+        stroke="var(--color-grid)"
         strokeWidth={stroke}
       />
       <circle

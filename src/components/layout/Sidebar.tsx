@@ -33,12 +33,19 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
                 onNavigate?.();
               }}
               aria-current={active ? "page" : undefined}
-              className={`group flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left text-sm transition-all duration-200 ${
+              className={`group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition-all duration-200 ${
                 active
-                  ? "border-accent/35 bg-accent-soft text-ink shadow-[0_4px_16px_rgba(91,103,240,0.15)]"
-                  : "border-transparent text-ink-2 hover:border-white/70 hover:bg-white/55 hover:text-ink"
+                  ? "bg-accent-soft text-ink shadow-[0_0_20px_var(--color-accent-soft)]"
+                  : "text-ink-2 hover:bg-soft hover:text-ink"
               }`}
             >
+              {/* narrow active indicator */}
+              <span
+                className={`absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-accent transition-opacity duration-200 ${
+                  active ? "opacity-100 shadow-[0_0_8px_var(--color-accent-glow)]" : "opacity-0"
+                }`}
+                aria-hidden
+              />
               <Icon
                 size={16}
                 aria-hidden
@@ -87,7 +94,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         {mobileOpen && (
           <>
             <motion.div
-              className="fixed inset-0 z-50 bg-ink/25 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-50 bg-scrim backdrop-blur-sm lg:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -95,7 +102,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
               aria-hidden
             />
             <motion.aside
-              className="glass fixed inset-y-3 left-3 z-50 w-[17rem] overflow-hidden lg:hidden"
+              className="glass-3 fixed inset-y-3 left-3 z-50 w-[17rem] overflow-hidden lg:hidden"
               role="dialog"
               aria-modal="true"
               aria-label={t.categories.all}

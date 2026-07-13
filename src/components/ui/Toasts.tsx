@@ -5,11 +5,14 @@ import { CircleCheck, Info, OctagonAlert, TriangleAlert, X } from "lucide-react"
 import { useDashboard, type Toast } from "@/components/dashboard/DashboardProvider";
 import { t } from "@/locales/zh-CN";
 
-const META: Record<Toast["severity"], { icon: typeof Info; color: string }> = {
-  info: { icon: Info, color: "text-maint" },
-  success: { icon: CircleCheck, color: "text-ok" },
-  warning: { icon: TriangleAlert, color: "text-warn" },
-  critical: { icon: OctagonAlert, color: "text-crit" },
+const META: Record<
+  Toast["severity"],
+  { icon: typeof Info; color: string; line: string }
+> = {
+  info: { icon: Info, color: "text-maint", line: "var(--color-maint)" },
+  success: { icon: CircleCheck, color: "text-ok", line: "var(--color-ok)" },
+  warning: { icon: TriangleAlert, color: "text-warn", line: "var(--color-warn)" },
+  critical: { icon: OctagonAlert, color: "text-crit", line: "var(--color-crit)" },
 };
 
 export function Toasts() {
@@ -28,12 +31,18 @@ export function Toasts() {
             <motion.div
               key={toast.id}
               layout
-              initial={{ opacity: 0, x: 44, scale: 0.97 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 24, scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 380, damping: 32 }}
-              className="glass flex items-start gap-3 rounded-xl! p-3.5 pr-2.5"
+              initial={{ opacity: 0, y: 14, filter: "blur(4px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: 8, filter: "blur(3px)" }}
+              transition={{ type: "spring", stiffness: 380, damping: 34 }}
+              className="glass-4 relative flex items-start gap-3 overflow-hidden p-3.5 pr-2.5"
             >
+              {/* narrow severity line */}
+              <span
+                className="absolute bottom-3 left-0 top-3 w-0.5 rounded-full"
+                style={{ background: meta.line }}
+                aria-hidden
+              />
               <Icon size={17} className={`mt-0.5 shrink-0 ${meta.color}`} aria-hidden />
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium leading-snug">{toast.title}</p>

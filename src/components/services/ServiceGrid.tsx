@@ -107,7 +107,7 @@ export function ServiceGrid() {
           type="button"
           onClick={() => void refreshAll()}
           disabled={refreshing}
-          className="inline-flex items-center gap-1.5 rounded-xl border border-white/70 bg-white/50 px-3 py-2 text-xs font-medium text-ink-2 shadow-sm transition-colors hover:bg-white/85 hover:text-ink disabled:opacity-60"
+          className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-soft px-3 py-2 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:bg-soft-2 hover:text-ink disabled:opacity-60"
         >
           <RefreshCw size={13} className={refreshing ? "spin-slow" : undefined} aria-hidden />
           {t.actions.refreshAll}
@@ -119,7 +119,7 @@ export function ServiceGrid() {
           className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium transition-colors ${
             editMode
               ? "border-accent/40 bg-accent-soft text-ink"
-              : "border-white/70 bg-white/50 text-ink-2 shadow-sm hover:bg-white/85 hover:text-ink"
+              : "border-line bg-soft text-ink-2 hover:border-line-strong hover:bg-soft-2 hover:text-ink"
           }`}
         >
           <LayoutList size={13} aria-hidden />
@@ -128,7 +128,7 @@ export function ServiceGrid() {
         <button
           type="button"
           onClick={() => openEditor(null)}
-          className="inline-flex items-center gap-1.5 rounded-xl border border-accent/30 bg-accent-soft px-3 py-2 text-xs font-medium text-ink transition-all hover:border-accent/50 hover:bg-accent/20"
+          className="inline-flex items-center gap-1.5 rounded-xl border border-accent/35 bg-accent-soft px-3 py-2 text-xs font-medium text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-all hover:border-accent/55 hover:bg-accent/25"
         >
           <Plus size={13} aria-hidden />
           {t.actions.addService}
@@ -172,7 +172,7 @@ export function ServiceGrid() {
           <button
             type="button"
             onClick={() => openEditor(null)}
-            className="mt-1 inline-flex items-center gap-1.5 rounded-xl border border-accent/30 bg-accent-soft px-3.5 py-2 text-xs font-medium transition-colors hover:bg-accent/20"
+            className="mt-1 inline-flex items-center gap-1.5 rounded-xl border border-accent/35 bg-accent-soft px-3.5 py-2 text-xs font-medium transition-colors hover:bg-accent/25"
           >
             <Plus size={13} aria-hidden />
             {t.actions.addService}
@@ -220,7 +220,7 @@ export function ServiceGrid() {
               <button
                 type="button"
                 onClick={() => setDeleteTarget(null)}
-                className="rounded-xl border border-white/70 bg-white/50 px-4 py-2 text-xs font-medium text-ink-2 shadow-sm transition-colors hover:bg-white/85 hover:text-ink"
+                className="rounded-xl border border-line bg-soft px-4 py-2 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:bg-soft-2 hover:text-ink"
               >
                 {t.actions.cancel}
               </button>
@@ -264,7 +264,7 @@ export function CategoryFilter() {
             className={`flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-medium transition-colors ${
               active
                 ? "border-accent/40 bg-accent-soft text-ink"
-                : "border-white/70 bg-white/50 text-ink-2 shadow-sm"
+                : "border-line bg-soft text-ink-2"
             }`}
           >
             <Icon size={13} aria-hidden />

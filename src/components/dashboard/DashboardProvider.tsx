@@ -23,17 +23,21 @@ import type {
 import { t } from "@/locales/zh-CN";
 import { formatClockTime, formatFullDate, formatLatency, formatPercent } from "@/lib/format";
 
+export type ThemeName = "dark" | "light";
+
 export interface DashboardSettings {
   /** null = manual refresh only */
   refreshIntervalSeconds: number | null;
   notificationsEnabled: boolean;
   reduceMotion: boolean;
+  theme: ThemeName;
 }
 
 const DEFAULT_SETTINGS: DashboardSettings = {
   refreshIntervalSeconds: 30,
   notificationsEnabled: true,
   reduceMotion: false,
+  theme: "dark",
 };
 
 const SETTINGS_KEY = "wcc:settings";
@@ -264,15 +268,25 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
 
   /* ---------------- settings + recents persistence ---------------- */
 
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
+
   useEffect(() => {
     try {
       const raw = localStorage.getItem(SETTINGS_KEY);
-      if (raw) setSettings({ ...DEFAULT_SETTINGS, ...JSON.parse(raw) });
+      const stored: DashboardSettings = raw
+        ? { ...DEFAULT_SETTINGS, ...JSON.parse(raw) }
+        : { ...DEFAULT_SETTINGS };
+      // ?theme= previews a theme without persisting it (see layout.tsx);
+      // it must also seed the state or this effect would clobber the preview.
+      const preview = new URLSearchParams(window.location.search).get("theme");
+      if (preview === "light" || preview === "dark") stored.theme = preview;
+      setSettings(stored);
       const recent = localStorage.getItem(RECENT_KEY);
       if (recent) setRecentIds(JSON.parse(recent));
     } catch {
       // ignore corrupt local data
     }
+    setSettingsLoaded(true);
   }, []);
 
   const updateSettings = useCallback((patch: Partial<DashboardSettings>) => {
@@ -290,6 +304,21 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     document.documentElement.classList.toggle("reduce-motion", settings.reduceMotion);
   }, [settings.reduceMotion]);
+
+  // The inline script in layout.tsx applies the stored theme before first
+  // paint; don't touch the attribute until stored settings have been read,
+  // or the default would briefly clobber it.
+  useEffect(() => {
+    if (!settingsLoaded) return;
+    if (settings.theme === "light") {
+      document.documentElement.dataset.theme = "light";
+    } else {
+      delete document.documentElement.dataset.theme;
+    }
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", settings.theme === "light" ? "#edf1f8" : "#050607");
+  }, [settingsLoaded, settings.theme]);
 
   /* ---------------- visibility-aware polling ---------------- */
 

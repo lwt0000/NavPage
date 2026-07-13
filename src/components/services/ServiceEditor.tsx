@@ -8,7 +8,7 @@ import { Modal } from "@/components/ui/Modal";
 import { ICON_CHOICES, getServiceIcon } from "./service-icons";
 
 const inputCls =
-  "w-full rounded-xl border border-line bg-well px-3 py-2 text-sm text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/60";
+  "w-full rounded-xl border border-line-strong bg-well px-3 py-2 text-sm text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/60 focus:bg-soft";
 const labelCls = "mb-1.5 block text-xs font-medium text-ink-2";
 
 interface FormState {
@@ -278,7 +278,7 @@ export function ServiceEditor() {
                     className={`grid size-9 place-items-center rounded-lg border transition-colors ${
                       selected
                         ? "border-accent/60 bg-accent-soft text-accent"
-                        : "border-white/70 bg-white/45 text-ink-3 shadow-sm hover:text-ink-2"
+                        : "border-line bg-soft text-ink-3 hover:border-line-strong hover:text-ink-2"
                     }`}
                   >
                     <Icon size={15} aria-hidden />
@@ -382,7 +382,7 @@ export function ServiceEditor() {
           ).map(([key, label]) => (
             <label
               key={key}
-              className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-white/70 bg-white/45 px-3 py-2.5 text-xs text-ink-2 shadow-sm transition-colors hover:bg-white/75"
+              className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-line bg-soft px-3 py-2.5 text-xs text-ink-2 transition-colors hover:border-line-strong hover:bg-soft-2"
             >
               <input
                 type="checkbox"
@@ -400,14 +400,14 @@ export function ServiceEditor() {
           <button
             type="button"
             onClick={closeEditor}
-            className="rounded-xl border border-white/70 bg-white/50 px-4 py-2 text-xs font-medium text-ink-2 shadow-sm transition-colors hover:bg-white/85 hover:text-ink"
+            className="rounded-xl border border-line bg-soft px-4 py-2 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:bg-soft-2 hover:text-ink"
           >
             {t.actions.cancel}
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="rounded-xl bg-accent px-5 py-2 text-xs font-semibold text-white shadow-[0_4px_14px_rgba(91,103,240,0.4)] transition-all hover:bg-accent/90 disabled:opacity-60"
+            className="rounded-xl border border-accent/50 bg-accent-soft px-5 py-2 text-xs font-semibold text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-all hover:border-accent/70 hover:bg-accent/25 hover:shadow-[0_4px_20px_var(--color-accent-glow),inset_0_1px_0_rgba(255,255,255,0.12)] disabled:opacity-60"
           >
             {t.actions.save}
           </button>

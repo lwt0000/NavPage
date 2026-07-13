@@ -33,7 +33,7 @@ export function ChartCard({ title, subtitle, legend, chart, table }: ChartCardPr
               aria-pressed={view === mode}
               className={`rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors ${
                 view === mode
-                  ? "bg-white text-ink shadow-sm"
+                  ? "bg-ink/10 text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
                   : "text-ink-3 hover:text-ink-2"
               }`}
             >
@@ -88,7 +88,7 @@ export function ChartTooltip({
   entries: Array<{ name: string; value: string; color?: string }>;
 }) {
   return (
-    <div className="glass rounded-xl! px-3 py-2.5 text-xs shadow-xl">
+    <div className="glass-4 px-3 py-2.5 text-xs">
       <div className="mb-1 text-[10px] text-ink-3">{label}</div>
       {entries.map((entry) => (
         <div key={entry.name} className="flex items-center gap-2">

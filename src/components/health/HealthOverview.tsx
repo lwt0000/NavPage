@@ -194,7 +194,7 @@ export function HealthOverview() {
 
           {/* extremes */}
           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
-            <div className="flex items-center gap-2.5 rounded-xl border border-white/70 bg-white/45 px-3.5 py-2.5 shadow-sm">
+            <div className="flex items-center gap-2.5 rounded-xl border border-line bg-soft px-3.5 py-2.5">
               <Turtle size={15} className="shrink-0 text-warn" aria-hidden />
               <div className="min-w-0 text-xs">
                 <div className="text-[10px] text-ink-3">{t.metrics.slowestService}</div>
@@ -205,7 +205,7 @@ export function HealthOverview() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-2.5 rounded-xl border border-white/70 bg-white/45 px-3.5 py-2.5 shadow-sm">
+            <div className="flex items-center gap-2.5 rounded-xl border border-line bg-soft px-3.5 py-2.5">
               <Rabbit size={15} className="shrink-0 text-ok" aria-hidden />
               <div className="min-w-0 text-xs">
                 <div className="text-[10px] text-ink-3">{t.metrics.fastestService}</div>
@@ -216,7 +216,7 @@ export function HealthOverview() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-2.5 rounded-xl border border-white/70 bg-white/45 px-3.5 py-2.5 shadow-sm">
+            <div className="flex items-center gap-2.5 rounded-xl border border-line bg-soft px-3.5 py-2.5">
               <RotateCcw size={15} className="shrink-0 text-maint" aria-hidden />
               <div className="min-w-0 text-xs">
                 <div className="text-[10px] text-ink-3">{t.metrics.lastRecovered}</div>

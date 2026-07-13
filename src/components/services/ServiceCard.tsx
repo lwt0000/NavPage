@@ -141,7 +141,7 @@ function CardMenu({
       </button>
       {open && (
         <div
-          className={`glass absolute right-0 z-50 w-44 bg-white/80 p-1.5 ${dropUp ? "bottom-9" : "top-9"}`}
+          className={`glass-3 absolute right-0 z-50 w-44 p-1.5 ${dropUp ? "bottom-9" : "top-9"}`}
         >
           {items.map(({ key, label, icon: Icon, danger, action }) => (
             <button
@@ -226,11 +226,11 @@ export function ServiceCard({ service, onRequestDelete }: ServiceCardProps) {
         layout={!editMode}
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
-        whileHover={editMode ? undefined : { y: -3 }}
+        whileHover={editMode ? undefined : { y: -5 }}
         transition={{ type: "spring", stiffness: 320, damping: 28 }}
         onMouseMove={onPointerGlow}
         aria-label={t.a11y.serviceCard(service.name, t.status[service.status])}
-        className={`glass spot flex h-full flex-col gap-3.5 p-5 ${
+        className={`glass card-glass spot group/card flex h-full flex-col gap-3.5 p-5 ${
           isDragging ? "ring-2 ring-accent/50" : ""
         } ${!service.monitoringEnabled ? "opacity-75" : ""}`}
       >
@@ -247,7 +247,7 @@ export function ServiceCard({ service, onRequestDelete }: ServiceCardProps) {
               <GripVertical size={15} aria-hidden />
             </button>
           )}
-          <div className="grid size-11 shrink-0 place-items-center rounded-xl border border-white/75 bg-gradient-to-br from-white/85 to-white/45 text-accent shadow-sm">
+          <div className="grid size-11 shrink-0 place-items-center rounded-xl border border-line-strong bg-soft text-ink-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-200 group-hover/card:text-ink">
             <Icon size={20} aria-hidden />
           </div>
           <div className="min-w-0 flex-1">
@@ -283,7 +283,7 @@ export function ServiceCard({ service, onRequestDelete }: ServiceCardProps) {
         <div className="flex flex-wrap items-center gap-1.5">
           <StatusBadge status={service.status} size="sm" />
           {service.routeLabel && (
-            <span className="rounded-full border border-white/70 bg-white/50 px-2 py-0.5 text-[11px] text-ink-2">
+            <span className="rounded-full border border-line bg-soft px-2 py-0.5 text-[11px] text-ink-2">
               {service.routeLabel}
             </span>
           )}
@@ -293,11 +293,11 @@ export function ServiceCard({ service, onRequestDelete }: ServiceCardProps) {
               {t.metrics.adminBadge}
             </span>
           )}
-          <span className="rounded-full border border-white/70 bg-white/50 px-2 py-0.5 text-[11px] text-ink-3">
+          <span className="rounded-full border border-line bg-soft px-2 py-0.5 text-[11px] text-ink-3">
             {t.categories[service.category]}
           </span>
           {!service.monitoringEnabled && (
-            <span className="rounded-full border border-white/70 bg-white/50 px-2 py-0.5 text-[11px] text-ink-3">
+            <span className="rounded-full border border-line bg-soft px-2 py-0.5 text-[11px] text-ink-3">
               {t.metrics.monitoringPaused}
             </span>
           )}
@@ -347,10 +347,14 @@ export function ServiceCard({ service, onRequestDelete }: ServiceCardProps) {
           <button
             type="button"
             onClick={() => openService(service)}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-accent/30 bg-accent-soft px-3.5 py-2 text-xs font-medium text-ink transition-all hover:border-accent/50 hover:bg-accent/20 hover:shadow-[0_4px_18px_rgba(91,103,240,0.3)]"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-accent/35 bg-accent-soft px-3.5 py-2 text-xs font-medium text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-all hover:border-accent/55 hover:bg-accent/25 hover:shadow-[0_4px_20px_var(--color-accent-glow),inset_0_1px_0_rgba(255,255,255,0.12)]"
           >
             {t.actions.open}
-            <ExternalLink size={12} aria-hidden />
+            <ExternalLink
+              size={12}
+              className="transition-transform duration-200 group-hover/card:translate-x-0.5"
+              aria-hidden
+            />
           </button>
           <span className="text-[11px] text-ink-3">
             {t.metrics.lastChecked}{" "}

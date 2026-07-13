@@ -15,6 +15,7 @@ import {
   Settings,
   Star,
   Stethoscope,
+  SunMoon,
   type LucideIcon,
 } from "lucide-react";
 import type { CategoryKey } from "@/lib/types";
@@ -57,6 +58,8 @@ export function CommandPalette() {
     setSettingsOpen,
     exportReport,
     setCategory,
+    settings,
+    updateSettings,
   } = useDashboard();
   const categories = useCategories();
   const [query, setQuery] = useState("");
@@ -118,6 +121,12 @@ export function CommandPalette() {
         run: () => setEditMode(!editMode),
       },
       { label: t.actions.exportReport, icon: FileDown, run: exportReport },
+      {
+        label: t.actions.toggleTheme,
+        icon: SunMoon,
+        run: () =>
+          updateSettings({ theme: settings.theme === "light" ? "dark" : "light" }),
+      },
       { label: t.actions.openSettings, icon: Settings, run: () => setSettingsOpen(true) },
     ];
 
@@ -163,6 +172,7 @@ export function CommandPalette() {
     snapshot, query, recentIds, categories, editMode,
     openService, refreshAll, openAllFavorites, openEditor,
     setEditMode, setSettingsOpen, exportReport, setCategory,
+    settings.theme, updateSettings,
   ]);
 
   useEffect(() => {
@@ -200,7 +210,7 @@ export function CommandPalette() {
     <AnimatePresence>
       {paletteOpen && (
         <motion.div
-          className="fixed inset-0 z-[60] overflow-y-auto bg-ink/25 p-4 backdrop-blur-md"
+          className="fixed inset-0 z-[60] overflow-y-auto bg-scrim p-4 backdrop-blur-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -210,7 +220,7 @@ export function CommandPalette() {
           }}
         >
           <motion.div
-            className="glass mx-auto mt-[10vh] w-full max-w-xl overflow-hidden p-0!"
+            className="glass-3 mx-auto mt-[10vh] w-full max-w-xl overflow-hidden p-0!"
             initial={{ opacity: 0, y: -14, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
@@ -233,7 +243,7 @@ export function CommandPalette() {
                 aria-activedescendant={items[active] ? `palette-item-${active}` : undefined}
                 className="h-13 w-full bg-transparent py-4 text-sm text-ink outline-none placeholder:text-ink-3"
               />
-              <kbd className="shrink-0 rounded-md border border-line bg-white/60 px-1.5 py-0.5 text-[10px] text-ink-3">
+              <kbd className="shrink-0 rounded-md border border-line bg-soft px-1.5 py-0.5 text-[10px] text-ink-3">
                 Esc
               </kbd>
             </div>

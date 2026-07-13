@@ -28,7 +28,7 @@ export function ActivityTimeline() {
   return (
     <section aria-label={t.activityFeed.title} className="glass p-5">
       <div className="mb-4 flex items-center gap-2.5">
-        <div className="grid size-9 place-items-center rounded-xl border border-white/75 bg-white/55 text-accent shadow-sm">
+        <div className="grid size-9 place-items-center rounded-xl border border-line-strong bg-soft text-ink-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
           <ActivityIcon size={16} aria-hidden />
         </div>
         <h2 className="text-sm font-semibold tracking-wide">
@@ -76,7 +76,7 @@ export function ActivityTimeline() {
           {visible.map((event) => (
             <li key={event.id} className="relative rounded-lg py-2 pl-1 pr-1 transition-colors hover:bg-ink/4">
               <span
-                className="absolute -left-[21px] top-3.5 size-2 rounded-full border-2 border-white"
+                className="absolute -left-[21px] top-3.5 size-2 rounded-full border-2 border-surface"
                 style={{ background: SEVERITY_COLOR[event.severity] }}
                 aria-hidden
               />
@@ -102,7 +102,7 @@ export function ActivityTimeline() {
           type="button"
           onClick={() => setExpanded((v) => !v)}
           aria-expanded={expanded}
-          className="mt-3 flex w-full items-center justify-center gap-1 rounded-xl border border-white/70 bg-white/45 py-2 text-[11px] font-medium text-ink-3 shadow-sm transition-colors hover:bg-white/80 hover:text-ink-2"
+          className="mt-3 flex w-full items-center justify-center gap-1 rounded-xl border border-line bg-soft py-2 text-[11px] font-medium text-ink-3 transition-colors hover:border-line-strong hover:bg-soft-2 hover:text-ink-2"
         >
           {t.activityFeed.showMore}
           <ChevronDown
