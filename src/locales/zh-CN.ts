@@ -11,6 +11,17 @@ export const zhCN = {
     userRole: "管理员",
     skipToContent: "跳转到主要内容",
   },
+  workspace: {
+    kicker: "日常控制台 · 实时状态",
+    title: "服务运行台",
+    monitored: "监控节点",
+    available: "当前在线",
+    serviceDirectory: "服务目录",
+    routeAnalysis: "线路分析",
+    healthReadout: "健康读数 · 01",
+    secureAccess: "安全访问",
+    serviceIndex: (n: number) => `节点 · ${String(n).padStart(2, "0")}`,
+  },
   header: {
     systemStatus: "系统状态",
     overallHealth: "整体健康度",
@@ -94,6 +105,7 @@ export const zhCN = {
     monitoringPaused: "监控已暂停",
     servicesOnlineOf: (online: number, total: number) =>
       `${online} / ${total} 个服务在线`,
+    recentChecks: (n: number) => `近 ${n} 次检测`,
     scoreUnit: "分",
     ms: "毫秒",
   },

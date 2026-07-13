@@ -29,7 +29,7 @@ function HealthSummaryCard({
   trend?: number[];
 }) {
   return (
-    <div className="well @container flex items-center justify-between gap-3 px-4 py-3.5">
+    <div className="@container flex items-center justify-between gap-3 border-l border-line-strong px-4 py-2.5">
       <div className="min-w-0">
         <div className="truncate text-[11px] text-ink-3">{label}</div>
         <div className="mt-1 truncate text-xl font-semibold leading-none">
@@ -127,7 +127,7 @@ export function HealthOverview() {
     return (
       <div className="glass p-6" id="health-overview" aria-hidden>
         <div className="flex flex-col items-center gap-6 md:flex-row">
-          <div className="skeleton size-44 rounded-full!" />
+          <div className="skeleton size-48 rounded-none!" />
           <div className="grid flex-1 grid-cols-2 gap-3 self-stretch xl:grid-cols-4">
             {Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="skeleton h-20" />
@@ -147,12 +147,16 @@ export function HealthOverview() {
     <section
       id="health-overview"
       aria-label={t.metrics.healthOverview}
-      className="glass p-5 sm:p-6"
+      className="glass health-overview-panel p-5 sm:p-6"
     >
       <div className="flex flex-col gap-6 lg:flex-row lg:items-center">
         {/* hero gauge */}
         <div className="flex shrink-0 flex-col items-center gap-2 lg:px-4">
-          <OverallHealthGauge score={overall.score} status={overall.status} />
+          <OverallHealthGauge
+            score={overall.score}
+            status={overall.status}
+            history={snapshot.history.overall}
+          />
           <p className="text-[11px] text-ink-3">
             {t.metrics.servicesOnlineOf(overall.online, overall.monitored)}
           </p>

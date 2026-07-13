@@ -17,11 +17,11 @@ import { useNow } from "@/components/ui/useNow";
 
 function Logo() {
   return (
-    <div className="relative grid size-9 shrink-0 place-items-center rounded-xl border border-line-strong bg-soft shadow-[0_0_24px_var(--color-accent-glow),inset_0_1px_0_rgba(255,255,255,0.1)]">
+    <div className="brand-mark relative grid size-8 shrink-0 place-items-center">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
         <path
           d="M4 7l3.2 10L12 8.5 16.8 17 20 7"
-          stroke="var(--color-accent)"
+          stroke="currentColor"
           strokeWidth="2.2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -122,7 +122,7 @@ function Notifications() {
         }}
         aria-label={t.header.notifications}
         aria-expanded={open}
-        className="relative rounded-xl border border-line bg-soft p-2.5 text-ink-2 transition-colors hover:border-line-strong hover:bg-soft-2 hover:text-ink"
+        className="control-button relative p-2.5 text-ink-2 transition-colors hover:text-ink"
       >
         <Bell size={16} aria-hidden />
         {unread > 0 && (
@@ -201,7 +201,7 @@ function ThemeToggle() {
       type="button"
       onClick={() => updateSettings({ theme: isLight ? "dark" : "light" })}
       aria-label={isLight ? t.header.switchToDark : t.header.switchToLight}
-      className="rounded-xl border border-line bg-soft p-2.5 text-ink-2 transition-colors hover:border-line-strong hover:bg-soft-2 hover:text-ink"
+      className="control-button p-2.5 text-ink-2 transition-colors hover:text-ink"
     >
       {isLight ? <Moon size={16} aria-hidden /> : <Sun size={16} aria-hidden />}
     </button>
@@ -215,20 +215,20 @@ export function AppHeader({ onMenuClick }: { onMenuClick: () => void }) {
   const StatusIcon = STATUS_META[status].icon;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-canvas/70 shadow-header backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-[1720px] items-center gap-3 px-4 sm:gap-4 lg:px-6">
+    <header className="app-header sticky top-0 z-40 border-b border-line shadow-header backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-[1680px] items-center gap-3 px-4 sm:gap-4 lg:px-6">
         <button
           type="button"
           onClick={onMenuClick}
           aria-label={t.header.openMenu}
-          className="rounded-xl border border-line bg-soft p-2.5 text-ink-2 transition-colors hover:text-ink lg:hidden"
+          className="control-button p-2.5 text-ink-2 transition-colors hover:text-ink lg:hidden"
         >
           <Menu size={16} aria-hidden />
         </button>
 
         <Logo />
         <div className="min-w-0 leading-tight">
-          <h1 className="truncate text-[15px] font-semibold tracking-wide">
+          <h1 className="truncate text-[14px] font-semibold tracking-[0.04em]">
             {t.app.title}
           </h1>
           <p className="hidden truncate text-[11px] text-ink-3 md:block">
@@ -238,7 +238,7 @@ export function AppHeader({ onMenuClick }: { onMenuClick: () => void }) {
 
         {/* global status pill */}
         {overall && (
-          <div className="ml-2 hidden items-center gap-2.5 rounded-full border border-line bg-soft py-1.5 pl-3 pr-4 xl:flex">
+          <div className="ml-3 hidden items-center gap-2.5 border-l border-line-strong py-1 pl-4 xl:flex">
             <StatusIcon
               size={14}
               className={STATUS_META[status].text}
@@ -265,7 +265,7 @@ export function AppHeader({ onMenuClick }: { onMenuClick: () => void }) {
         {overall && (
           <a
             href="#health-overview"
-            className="hidden items-center gap-2 rounded-xl px-2 py-1 transition-colors hover:bg-ink/4 sm:flex"
+            className="hidden items-center gap-2 px-2 py-1 transition-colors hover:bg-ink/4 sm:flex"
             aria-label={t.a11y.healthGauge(overall.score)}
           >
             <MiniHealthRing score={overall.score} />
@@ -281,7 +281,7 @@ export function AppHeader({ onMenuClick }: { onMenuClick: () => void }) {
         <button
           type="button"
           onClick={() => setPaletteOpen(true)}
-          className="flex items-center gap-2 rounded-xl border border-line bg-soft px-3 py-2.5 text-sm text-ink-3 transition-colors hover:border-line-strong hover:bg-soft-2 hover:text-ink-2"
+          className="control-button flex items-center gap-2 px-3 py-2.5 text-sm text-ink-3 transition-colors hover:text-ink-2"
           aria-label={t.actions.search}
         >
           <Search size={15} aria-hidden />
@@ -299,13 +299,13 @@ export function AppHeader({ onMenuClick }: { onMenuClick: () => void }) {
           type="button"
           onClick={() => setSettingsOpen(true)}
           aria-label={t.header.settings}
-          className="rounded-xl border border-line bg-soft p-2.5 text-ink-2 transition-colors hover:border-line-strong hover:bg-soft-2 hover:text-ink"
+          className="control-button p-2.5 text-ink-2 transition-colors hover:text-ink"
         >
           <Settings size={16} aria-hidden />
         </button>
 
         <div className="hidden items-center gap-2.5 border-l border-line pl-3 lg:flex">
-          <div className="grid size-8 place-items-center rounded-full border border-accent/30 bg-accent-soft text-xs font-semibold text-accent">
+          <div className="grid size-8 place-items-center border border-accent/40 bg-accent-soft text-xs font-semibold text-accent">
             {t.app.user.slice(0, 1)}
           </div>
           <div className="leading-tight">

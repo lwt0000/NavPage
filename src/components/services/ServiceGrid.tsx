@@ -92,13 +92,16 @@ export function ServiceGrid() {
   return (
     <section aria-label={t.a11y.statusLive} aria-busy={refreshing}>
       {/* section header */}
-      <div className="mb-4 flex flex-wrap items-center gap-3">
-        <h2 className="text-base font-semibold tracking-wide">
-          {activeCategory?.label ?? t.categories.all}
-          <span className="ml-2 text-sm font-normal text-ink-3 tabular-nums">
-            {services.length}
-          </span>
-        </h2>
+      <div className="mb-4 flex flex-wrap items-end gap-3 border-b border-line pb-3">
+        <div>
+          <p className="section-kicker mb-1.5">{t.workspace.serviceDirectory}</p>
+          <h2 className="text-lg font-semibold tracking-[-0.025em]">
+            {activeCategory?.label ?? t.categories.all}
+            <span className="ml-2 font-mono text-xs font-normal text-ink-3 tabular-nums">
+              / {String(services.length).padStart(2, "0")}
+            </span>
+          </h2>
+        </div>
         <div className="hidden sm:block">
           <RefreshIndicator compact />
         </div>
@@ -107,7 +110,7 @@ export function ServiceGrid() {
           type="button"
           onClick={() => void refreshAll()}
           disabled={refreshing}
-          className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-soft px-3 py-2 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:bg-soft-2 hover:text-ink disabled:opacity-60"
+          className="control-button inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-ink-2 transition-colors hover:text-ink disabled:opacity-60"
         >
           <RefreshCw size={13} className={refreshing ? "spin-slow" : undefined} aria-hidden />
           {t.actions.refreshAll}
@@ -116,7 +119,7 @@ export function ServiceGrid() {
           type="button"
           onClick={() => setEditMode(!editMode)}
           aria-pressed={editMode}
-          className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium transition-colors ${
+          className={`inline-flex items-center gap-1.5 rounded-[3px] border px-3 py-2 text-xs font-medium transition-colors ${
             editMode
               ? "border-accent/40 bg-accent-soft text-ink"
               : "border-line bg-soft text-ink-2 hover:border-line-strong hover:bg-soft-2 hover:text-ink"
@@ -128,7 +131,7 @@ export function ServiceGrid() {
         <button
           type="button"
           onClick={() => openEditor(null)}
-          className="inline-flex items-center gap-1.5 rounded-xl border border-accent/35 bg-accent-soft px-3 py-2 text-xs font-medium text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-all hover:border-accent/55 hover:bg-accent/25"
+          className="primary-action inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold transition-all"
         >
           <Plus size={13} aria-hidden />
           {t.actions.addService}
@@ -158,7 +161,7 @@ export function ServiceGrid() {
       {/* grid */}
       {showSkeletons ? (
         <div
-          className="grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] gap-4"
+          className="grid grid-cols-1 gap-3.5 md:grid-cols-[repeat(auto-fill,minmax(320px,1fr))]"
           aria-label={t.a11y.loadingServices}
         >
           {Array.from({ length: 6 }).map((_, i) => (
@@ -189,14 +192,15 @@ export function ServiceGrid() {
             strategy={rectSortingStrategy}
           >
             <div
-              className={`grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] gap-4 transition-opacity duration-300 ${
+              className={`grid grid-cols-1 gap-3.5 transition-opacity duration-300 md:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] ${
                 refreshing ? "opacity-[0.93]" : ""
               }`}
             >
-              {services.map((svc) => (
+              {services.map((svc, index) => (
                 <ServiceCard
                   key={svc.id}
                   service={svc}
+                  index={index}
                   onRequestDelete={setDeleteTarget}
                 />
               ))}

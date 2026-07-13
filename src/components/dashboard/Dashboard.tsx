@@ -34,8 +34,9 @@ function NetworkBanner() {
 }
 
 export function Dashboard() {
-  const { settings } = useDashboard();
+  const { settings, snapshot } = useDashboard();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const overall = snapshot?.overall;
 
   return (
     <MotionConfig reducedMotion={settings.reduceMotion ? "always" : "user"}>
@@ -60,11 +61,34 @@ export function Dashboard() {
       <div className="relative z-10">
         <AppHeader onMenuClick={() => setMobileNavOpen(true)} />
 
-        <div className="mx-auto flex max-w-[1720px] items-start gap-5 px-4 pb-10 pt-5 lg:px-6">
+        <div className="mx-auto flex max-w-[1680px] items-start gap-5 px-4 pb-12 pt-4 lg:px-6 lg:pt-5">
           <Sidebar mobileOpen={mobileNavOpen} onClose={() => setMobileNavOpen(false)} />
 
           <main id="main" className="min-w-0 flex-1 space-y-5">
             <NetworkBanner />
+            <section className="dashboard-intro" aria-labelledby="workspace-title">
+              <div>
+                <p className="intro-kicker">{t.workspace.kicker}</p>
+                <h2 id="workspace-title" className="intro-title">{t.workspace.title}</h2>
+                <p className="mt-3 max-w-xl text-xs leading-relaxed text-ink-3 sm:text-sm">
+                  {t.app.subtitle}
+                </p>
+              </div>
+              <dl className="intro-meta" aria-label={t.metrics.healthOverview}>
+                <div>
+                  <dt className="text-[10px] text-ink-3">{t.workspace.monitored}</dt>
+                  <dd className="mt-1 font-mono text-xl tabular-nums">
+                    {overall?.monitored ?? "—"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-[10px] text-ink-3">{t.workspace.available}</dt>
+                  <dd className="mt-1 font-mono text-xl tabular-nums text-ok">
+                    {overall?.online ?? "—"}
+                  </dd>
+                </div>
+              </dl>
+            </section>
             <CategoryFilter />
             <HealthOverview />
             <ServiceGrid />
@@ -80,7 +104,7 @@ export function Dashboard() {
             </div>
           </main>
 
-          <aside className="sticky top-[4.75rem] hidden w-[21.5rem] shrink-0 space-y-5 2xl:block">
+          <aside className="sticky top-[4.75rem] hidden w-[20rem] shrink-0 space-y-5 2xl:block">
             <QuickActions />
             <ActivityTimeline />
           </aside>

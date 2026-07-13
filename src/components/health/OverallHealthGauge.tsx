@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { animate, useReducedMotion } from "framer-motion";
-import type { ServiceStatus } from "@/lib/types";
+import type { OverallSample, ServiceStatus } from "@/lib/types";
 import { t } from "@/locales/zh-CN";
+import { formatRelative } from "@/lib/format";
 import { StatusBadge } from "@/components/services/StatusBadge";
 import { scoreColor } from "@/components/services/status-meta";
+import { useNow } from "@/components/ui/useNow";
 
 function useAnimatedScore(score: number): number {
   const [display, setDisplay] = useState(score);
@@ -31,81 +33,72 @@ function useAnimatedScore(score: number): number {
 interface GaugeProps {
   score: number;
   status: ServiceStatus;
+  /** overall health history; the trend bar shows the most recent samples */
+  history?: OverallSample[];
   size?: number;
 }
 
-const SEGMENTS = 44;
-/* 270° instrument arc, opening at the bottom */
-const START_ANGLE = 135;
-const SWEEP = 270;
+/** One trend slot per health-history sample (last TREND_SLOTS checks). */
+const TREND_SLOTS = 12;
 
-/** Segmented radial instrument — the one hero figure of the dashboard. */
-export function OverallHealthGauge({ score, status, size = 184 }: GaugeProps) {
+/** Compact industrial readout — a deliberate alternative to a generic radial gauge. */
+export function OverallHealthGauge({ score, status, history, size = 196 }: GaugeProps) {
   const display = useAnimatedScore(score);
   const color = scoreColor(score);
-  const cx = size / 2;
-  const cy = size / 2;
-  const rOuter = size / 2 - 5;
-  const rInner = rOuter - 11;
-  const lit = Math.round((display / 100) * SEGMENTS);
-
-  const ticks = Array.from({ length: SEGMENTS }, (_, i) => {
-    const angle = START_ANGLE + (i / (SEGMENTS - 1)) * SWEEP;
-    const rad = (angle * Math.PI) / 180;
-    const cos = Math.cos(rad);
-    const sin = Math.sin(rad);
-    return {
-      x1: cx + rInner * cos,
-      y1: cy + rInner * sin,
-      x2: cx + rOuter * cos,
-      y2: cy + rOuter * sin,
-      on: i < lit,
-    };
-  });
+  const now = useNow(30_000);
+  const samples = (history ?? []).slice(-TREND_SLOTS);
 
   return (
     <div
-      className="relative flex flex-col items-center"
+      className="relative flex flex-col justify-between border border-line-strong bg-canvas/55 p-4"
+      style={{ width: size, height: size }}
       role="img"
       aria-label={t.a11y.healthGauge(score)}
     >
-      <svg width={size} height={size}>
-        {/* soft center glow */}
-        <circle
-          cx={cx}
-          cy={cy}
-          r={rInner - 14}
-          fill={color}
-          opacity={0.09}
-          style={{ filter: "blur(18px)", transition: "fill 0.4s ease" }}
-        />
-        {ticks.map((tick, i) => (
-          <line
-            key={i}
-            x1={tick.x1}
-            y1={tick.y1}
-            x2={tick.x2}
-            y2={tick.y2}
-            stroke={tick.on ? color : "var(--color-grid)"}
-            strokeWidth={3}
-            strokeLinecap="round"
-            style={{
-              transition: "stroke 0.3s ease",
-              filter: tick.on
-                ? `drop-shadow(0 0 4px color-mix(in oklab, ${color} 55%, transparent))`
-                : undefined,
-            }}
-          />
-        ))}
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5">
-        <div className="flex items-baseline">
-          <span className="text-5xl font-semibold leading-none tracking-tight tabular-nums">
+      <div className="flex items-start justify-between">
+        <span className="font-mono text-[9px] tracking-[0.12em] text-ink-3">{t.workspace.healthReadout}</span>
+        <span className="size-2" style={{ background: color }} aria-hidden />
+      </div>
+      <div>
+        <div className="flex items-end leading-none">
+          <span className="font-mono text-6xl font-medium tracking-[-0.09em] tabular-nums">
             {display}
           </span>
-          <span className="ml-0.5 text-lg font-medium text-ink-2">%</span>
+          <span className="mb-1 ml-1 text-sm text-ink-3">%</span>
         </div>
-        <span className="text-xs text-ink-3">{t.header.overallHealth}</span>
+        <div className="mt-2 text-[11px] text-ink-3">{t.header.overallHealth}</div>
+      </div>
+      <div>
+        <div className="mb-1 flex items-baseline justify-between font-mono text-[9px] tracking-[0.08em] text-ink-3">
+          <span>{t.metrics.healthHistory}</span>
+          <span>
+            {samples.length > 0
+              ? t.metrics.recentChecks(samples.length)
+              : t.metrics.noData}
+          </span>
+        </div>
+        {/* bar per history sample: height = score, muted past, bright latest */}
+        <div className="mb-2 flex h-4 items-end gap-1" aria-hidden>
+          {Array.from({ length: TREND_SLOTS - samples.length }, (_, i) => (
+            <span
+              key={`empty-${i}`}
+              className="flex-1"
+              style={{ height: "16%", background: "var(--color-grid)" }}
+            />
+          ))}
+          {samples.map((sample, i) => (
+            <span
+              key={sample.t}
+              className="flex-1 transition-all duration-300"
+              title={`${formatRelative(sample.t, now)} · ${sample.score}%`}
+              style={{
+                height: `${16 + (sample.score / 100) * 84}%`,
+                background: scoreColor(sample.score),
+                opacity: i === samples.length - 1 ? 1 : 0.45,
+              }}
+            />
+          ))}
+        </div>
         <StatusBadge status={status} size="sm" />
       </div>
     </div>

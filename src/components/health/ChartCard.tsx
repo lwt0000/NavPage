@@ -17,7 +17,7 @@ export function ChartCard({ title, subtitle, legend, chart, table }: ChartCardPr
   const [view, setView] = useState<"chart" | "table">("chart");
 
   return (
-    <div className="glass p-5">
+    <div className="glass module-panel chart-panel p-5">
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <div className="min-w-0 flex-1">
           <h3 className="text-sm font-semibold tracking-wide">{title}</h3>

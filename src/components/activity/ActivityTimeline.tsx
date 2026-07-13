@@ -26,9 +26,9 @@ export function ActivityTimeline() {
   const visible = activity.slice(0, expanded ? 30 : 10);
 
   return (
-    <section aria-label={t.activityFeed.title} className="glass p-5">
+    <section aria-label={t.activityFeed.title} className="glass module-panel p-5">
       <div className="mb-4 flex items-center gap-2.5">
-        <div className="grid size-9 place-items-center rounded-xl border border-line-strong bg-soft text-ink-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+        <div className="module-icon grid size-9 place-items-center text-ink-2">
           <ActivityIcon size={16} aria-hidden />
         </div>
         <h2 className="text-sm font-semibold tracking-wide">

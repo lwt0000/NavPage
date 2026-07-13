@@ -30,6 +30,7 @@ import { StatusBadge } from "./StatusBadge";
 interface ServiceCardProps {
   service: DashboardService;
   onRequestDelete: (service: DashboardService) => void;
+  index?: number;
 }
 
 function CardMenu({
@@ -189,7 +190,7 @@ function Metric({
   );
 }
 
-export function ServiceCard({ service, onRequestDelete }: ServiceCardProps) {
+export function ServiceCard({ service, onRequestDelete, index = 0 }: ServiceCardProps) {
   const { editMode, toggleFavorite, openService } = useDashboard();
   const now = useNow(10_000);
   const Icon = getServiceIcon(service.icon);
@@ -226,14 +227,19 @@ export function ServiceCard({ service, onRequestDelete }: ServiceCardProps) {
         layout={!editMode}
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
-        whileHover={editMode ? undefined : { y: -5 }}
+        whileHover={editMode ? undefined : { y: -2 }}
         transition={{ type: "spring", stiffness: 320, damping: 28 }}
         onMouseMove={onPointerGlow}
         aria-label={t.a11y.serviceCard(service.name, t.status[service.status])}
-        className={`glass card-glass spot group/card flex h-full flex-col gap-3.5 p-5 ${
+        className={`glass card-glass service-card spot group/card flex h-full flex-col gap-4 p-5 ${
           isDragging ? "ring-2 ring-accent/50" : ""
         } ${!service.monitoringEnabled ? "opacity-75" : ""}`}
       >
+        <div className="flex items-center justify-between border-b border-line pb-2">
+          <span className="service-index">{t.workspace.serviceIndex(index + 1)}</span>
+          <span className="service-index">{t.categories[service.category]}</span>
+        </div>
+
         {/* header */}
         <div className="flex items-start gap-3">
           {editMode && (
@@ -247,11 +253,11 @@ export function ServiceCard({ service, onRequestDelete }: ServiceCardProps) {
               <GripVertical size={15} aria-hidden />
             </button>
           )}
-          <div className="grid size-11 shrink-0 place-items-center rounded-xl border border-line-strong bg-soft text-ink-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-200 group-hover/card:text-ink">
+          <div className="service-icon grid size-11 shrink-0 place-items-center text-ink-2 transition-all duration-200 group-hover/card:text-accent">
             <Icon size={20} aria-hidden />
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="truncate text-[15px] font-semibold leading-tight">
+            <h3 className="truncate text-[16px] font-semibold leading-tight tracking-[-0.02em]">
               {service.name}
             </h3>
             <p className="mt-0.5 truncate text-xs text-ink-3">{service.displayUrl}</p>
@@ -293,9 +299,6 @@ export function ServiceCard({ service, onRequestDelete }: ServiceCardProps) {
               {t.metrics.adminBadge}
             </span>
           )}
-          <span className="rounded-full border border-line bg-soft px-2 py-0.5 text-[11px] text-ink-3">
-            {t.categories[service.category]}
-          </span>
           {!service.monitoringEnabled && (
             <span className="rounded-full border border-line bg-soft px-2 py-0.5 text-[11px] text-ink-3">
               {t.metrics.monitoringPaused}
@@ -304,7 +307,7 @@ export function ServiceCard({ service, onRequestDelete }: ServiceCardProps) {
         </div>
 
         {/* metrics */}
-        <div className="well grid grid-cols-3 gap-3 px-3.5 py-3">
+        <div className="metric-strip grid grid-cols-3 gap-3 py-3">
           <Metric
             label={t.metrics.healthScore}
             value={service.status === "unknown" ? "—" : `${service.healthScore}%`}
@@ -347,7 +350,7 @@ export function ServiceCard({ service, onRequestDelete }: ServiceCardProps) {
           <button
             type="button"
             onClick={() => openService(service)}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-accent/35 bg-accent-soft px-3.5 py-2 text-xs font-medium text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-all hover:border-accent/55 hover:bg-accent/25 hover:shadow-[0_4px_20px_var(--color-accent-glow),inset_0_1px_0_rgba(255,255,255,0.12)]"
+            className="primary-action inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold transition-all"
           >
             {t.actions.open}
             <ExternalLink

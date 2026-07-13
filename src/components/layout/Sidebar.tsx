@@ -33,28 +33,29 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
                 onNavigate?.();
               }}
               aria-current={active ? "page" : undefined}
-              className={`group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition-all duration-200 ${
+              data-active={active}
+              className={`nav-item group relative flex w-full items-center gap-3 px-3 py-2.5 text-left text-sm transition-all duration-200 ${
                 active
-                  ? "bg-accent-soft text-ink shadow-[0_0_20px_var(--color-accent-soft)]"
+                  ? ""
                   : "text-ink-2 hover:bg-soft hover:text-ink"
               }`}
             >
               {/* narrow active indicator */}
               <span
                 className={`absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-accent transition-opacity duration-200 ${
-                  active ? "opacity-100 shadow-[0_0_8px_var(--color-accent-glow)]" : "opacity-0"
+                  active ? "opacity-100" : "opacity-0"
                 }`}
                 aria-hidden
               />
               <Icon
                 size={16}
                 aria-hidden
-                className={active ? "text-accent" : "text-ink-3 transition-colors group-hover:text-ink-2"}
+                className={active ? "" : "text-ink-3 transition-colors group-hover:text-ink-2"}
               />
               <span className="flex-1 truncate font-medium">{label}</span>
               <span
                 className={`rounded-full px-2 py-0.5 text-[11px] tabular-nums ${
-                  active ? "bg-accent/20 text-ink" : "bg-ink/6 text-ink-3"
+                  active ? "bg-black/8 text-current" : "bg-ink/6 text-ink-3"
                 }`}
               >
                 {count}
@@ -84,7 +85,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
     <>
       {/* desktop rail */}
       <aside className="sticky top-[4.75rem] hidden h-[calc(100dvh-5.75rem)] w-60 shrink-0 lg:block">
-        <div className="glass h-full overflow-hidden">
+        <div className="glass nav-panel h-full overflow-hidden">
           <SidebarContent />
         </div>
       </aside>

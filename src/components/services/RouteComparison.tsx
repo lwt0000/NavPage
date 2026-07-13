@@ -42,8 +42,8 @@ function RoutePanel({
 
   return (
     <div
-      className={`well relative flex flex-col gap-3 p-4 transition-shadow ${
-        recommended ? "ring-1 ring-accent/45 shadow-[0_0_28px_var(--color-accent-soft)]" : ""
+      className={`relative flex flex-col gap-3 border-l p-4 transition-colors ${
+        recommended ? "border-accent bg-accent/5" : "border-line-strong bg-canvas/25"
       }`}
     >
       <div className="flex items-center gap-2.5">
@@ -55,7 +55,7 @@ function RoutePanel({
         <span className="text-xs font-semibold">{service.routeLabel}</span>
         <span className="truncate text-[11px] text-ink-3">{service.displayUrl}</span>
         {recommended && (
-          <span className="ml-auto inline-flex shrink-0 items-center gap-1 rounded-full border border-accent/40 bg-accent-soft px-2 py-0.5 text-[10px] font-medium text-ink">
+          <span className="ml-auto inline-flex shrink-0 items-center gap-1 border border-accent/40 bg-accent-soft px-2 py-0.5 text-[10px] font-medium text-ink">
             <BadgeCheck size={11} aria-hidden />
             {t.comparison.recommendedRoute}
           </span>
@@ -117,7 +117,7 @@ function RoutePanel({
       <button
         type="button"
         onClick={() => openService(service)}
-        className="mt-1 self-start rounded-lg border border-line bg-soft px-3 py-1.5 text-[11px] font-medium text-ink-2 transition-colors hover:border-line-strong hover:bg-soft-2 hover:text-ink"
+        className="control-button mt-1 self-start px-3 py-1.5 text-[11px] font-medium text-ink-2 transition-colors hover:text-ink"
       >
         {t.actions.open}
       </button>
@@ -146,12 +146,13 @@ export function RouteComparison() {
   const chinaAvg = avgLatency(snapshot.history.services[china.id] ?? []);
 
   return (
-    <section id="route-comparison" aria-label={t.comparison.title} className="glass p-5 sm:p-6">
+    <section id="route-comparison" aria-label={t.comparison.title} className="glass module-panel p-5 sm:p-6">
       <div className="mb-4 flex flex-wrap items-center gap-3">
-        <div className="grid size-9 place-items-center rounded-xl border border-line-strong bg-soft text-ink-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+        <div className="module-icon grid size-9 place-items-center text-ink-2">
           <ArrowLeftRight size={16} aria-hidden />
         </div>
         <div className="min-w-0 flex-1">
+          <p className="section-kicker mb-1">{t.workspace.routeAnalysis}</p>
           <h2 className="text-sm font-semibold tracking-wide">{t.comparison.title}</h2>
           <p className="mt-0.5 text-[11px] text-ink-3">
             {hints.length > 0
@@ -159,7 +160,7 @@ export function RouteComparison() {
               : `Emby · ${t.comparison.globalRoute} / ${t.comparison.chinaRoute}`}
           </p>
         </div>
-        <span className="rounded-full border border-line bg-soft px-3 py-1.5 text-xs font-medium text-ink-2">
+        <span className="border border-line bg-soft px-3 py-1.5 text-xs font-medium text-ink-2">
           {t.comparison.recommendation[headline]}
         </span>
       </div>
