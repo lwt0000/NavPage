@@ -76,14 +76,14 @@ export function Dashboard() {
               </div>
               <dl className="intro-meta" aria-label={t.metrics.healthOverview}>
                 <div>
-                  <dt className="text-[10px] text-ink-3">{t.workspace.monitored}</dt>
-                  <dd className="mt-1 font-mono text-xl tabular-nums">
+                  <dt className="text-[11px] text-ink-3">{t.workspace.monitored}</dt>
+                  <dd className="mt-1 text-xl font-semibold tabular-nums">
                     {overall?.monitored ?? "—"}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-[10px] text-ink-3">{t.workspace.available}</dt>
-                  <dd className="mt-1 font-mono text-xl tabular-nums text-ok">
+                  <dt className="text-[11px] text-ink-3">{t.workspace.available}</dt>
+                  <dd className="mt-1 text-xl font-semibold tabular-nums text-ok">
                     {overall?.online ?? "—"}
                   </dd>
                 </div>

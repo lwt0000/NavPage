@@ -31,7 +31,7 @@ export function ActivityTimeline() {
         <div className="module-icon grid size-9 place-items-center text-ink-2">
           <ActivityIcon size={16} aria-hidden />
         </div>
-        <h2 className="text-sm font-semibold tracking-wide">
+        <h2 className="text-sm font-semibold">
           {t.activityFeed.title}
         </h2>
         {incidents.length > 0 && (

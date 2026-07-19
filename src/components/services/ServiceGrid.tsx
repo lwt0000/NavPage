@@ -95,10 +95,10 @@ export function ServiceGrid() {
       <div className="mb-4 flex flex-wrap items-end gap-3 border-b border-line pb-3">
         <div>
           <p className="section-kicker mb-1.5">{t.workspace.serviceDirectory}</p>
-          <h2 className="text-lg font-semibold tracking-[-0.025em]">
+          <h2 className="text-lg font-semibold tracking-[-0.02em]">
             {activeCategory?.label ?? t.categories.all}
-            <span className="ml-2 font-mono text-xs font-normal text-ink-3 tabular-nums">
-              / {String(services.length).padStart(2, "0")}
+            <span className="ml-2 text-xs font-normal text-ink-3 tabular-nums">
+              {services.length}
             </span>
           </h2>
         </div>
@@ -119,7 +119,7 @@ export function ServiceGrid() {
           type="button"
           onClick={() => setEditMode(!editMode)}
           aria-pressed={editMode}
-          className={`inline-flex items-center gap-1.5 rounded-[3px] border px-3 py-2 text-xs font-medium transition-colors ${
+          className={`pressable inline-flex items-center gap-1.5 rounded-full border px-3 py-2 text-xs font-medium ${
             editMode
               ? "border-accent/40 bg-accent-soft text-ink"
               : "border-line bg-soft text-ink-2 hover:border-line-strong hover:bg-soft-2 hover:text-ink"
@@ -151,7 +151,7 @@ export function ServiceGrid() {
           <button
             type="button"
             onClick={() => void refreshAll()}
-            className="rounded-lg border border-warn/30 px-2.5 py-1 font-medium transition-colors hover:bg-warn/10"
+            className="pressable rounded-lg border border-warn/30 px-2.5 py-1 font-medium hover:bg-warn/10"
           >
             {t.actions.retry}
           </button>
@@ -175,7 +175,7 @@ export function ServiceGrid() {
           <button
             type="button"
             onClick={() => openEditor(null)}
-            className="mt-1 inline-flex items-center gap-1.5 rounded-xl border border-accent/35 bg-accent-soft px-3.5 py-2 text-xs font-medium transition-colors hover:bg-accent/25"
+            className="pressable mt-1 inline-flex items-center gap-1.5 rounded-xl border border-accent/35 bg-accent-soft px-3.5 py-2 text-xs font-medium hover:bg-accent/25"
           >
             <Plus size={13} aria-hidden />
             {t.actions.addService}
@@ -224,7 +224,7 @@ export function ServiceGrid() {
               <button
                 type="button"
                 onClick={() => setDeleteTarget(null)}
-                className="rounded-xl border border-line bg-soft px-4 py-2 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:bg-soft-2 hover:text-ink"
+                className="pressable rounded-xl border border-line bg-soft px-4 py-2 text-xs font-medium text-ink-2 hover:border-line-strong hover:bg-soft-2 hover:text-ink"
               >
                 {t.actions.cancel}
               </button>
@@ -234,7 +234,7 @@ export function ServiceGrid() {
                   void removeService(deleteTarget.id);
                   setDeleteTarget(null);
                 }}
-                className="rounded-xl border border-crit/40 bg-crit/15 px-4 py-2 text-xs font-medium text-crit transition-colors hover:bg-crit/25"
+                className="pressable rounded-xl border border-crit/40 bg-crit/15 px-4 py-2 text-xs font-medium text-crit hover:bg-crit/25"
               >
                 {t.actions.deleteService}
               </button>
@@ -252,7 +252,7 @@ export function CategoryFilter() {
   const categories = useCategories();
   return (
     <div
-      className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 lg:hidden"
+      className="-mx-4 flex snap-x snap-proximity gap-2 overflow-x-auto px-4 pb-1 lg:hidden"
       role="tablist"
       aria-label={t.categories.all}
     >
@@ -265,7 +265,7 @@ export function CategoryFilter() {
             role="tab"
             aria-selected={active}
             onClick={() => setCategory(key)}
-            className={`flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-medium transition-colors ${
+            className={`pressable flex shrink-0 snap-start scroll-ml-4 items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-medium ${
               active
                 ? "border-accent/40 bg-accent-soft text-ink"
                 : "border-line bg-soft text-ink-2"

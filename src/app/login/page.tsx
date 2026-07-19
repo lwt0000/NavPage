@@ -6,7 +6,7 @@ import { Eye, EyeOff, LockKeyhole, ShieldCheck } from "lucide-react";
 import { t } from "@/locales/zh-CN";
 
 const inputCls =
-  "w-full rounded-[3px] border border-line-strong bg-well px-3 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/60 focus:bg-soft";
+  "w-full rounded-xl border border-line-strong bg-well px-3 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/60 focus:bg-soft";
 
 export default function LoginPage() {
   const [password, setPassword] = useState("");
@@ -82,14 +82,14 @@ export default function LoginPage() {
           initial={{ opacity: 0, y: 14, scale: 0.985 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="glass module-panel w-full max-w-sm border-t-2 border-t-accent p-7 sm:p-8"
+          className="glass module-panel w-full max-w-sm p-7 sm:p-8"
         >
           <div>
             <p className="section-kicker">{t.workspace.secureAccess}</p>
-            <div className="mt-6 flex size-11 items-center justify-center border border-accent/40 bg-accent-soft text-accent">
+            <div className="mt-6 flex size-11 items-center justify-center rounded-2xl bg-accent-soft text-accent">
               <ShieldCheck size={22} aria-hidden />
             </div>
-            <h1 className="mt-5 text-2xl font-semibold tracking-[-0.04em]">{t.app.title}</h1>
+            <h1 className="mt-5 text-2xl font-bold tracking-[-0.022em]">{t.app.title}</h1>
             <p className="mt-1 text-xs text-ink-3">{t.auth.loginSubtitle}</p>
           </div>
 
@@ -113,7 +113,7 @@ export default function LoginPage() {
                   type="button"
                   onClick={() => setVisible((v) => !v)}
                   aria-label={visible ? t.auth.hidePassword : t.auth.showPassword}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-ink-3 transition-colors hover:text-ink"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 touch-manipulation text-ink-3 transition-colors hover:text-ink [-webkit-tap-highlight-color:transparent]"
                 >
                   {visible ? <EyeOff size={15} aria-hidden /> : <Eye size={15} aria-hidden />}
                 </button>
@@ -121,7 +121,7 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <p role="alert" className="rounded-[3px] border border-crit/35 bg-crit/10 px-3 py-2.5 text-xs font-medium text-crit">
+              <p role="alert" className="rounded-xl border border-crit/35 bg-crit/10 px-3 py-2.5 text-xs font-medium text-crit">
                 {error}
               </p>
             )}

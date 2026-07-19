@@ -42,8 +42,8 @@ function RoutePanel({
 
   return (
     <div
-      className={`relative flex flex-col gap-3 border-l p-4 transition-colors ${
-        recommended ? "border-accent bg-accent/5" : "border-line-strong bg-canvas/25"
+      className={`relative flex flex-col gap-3 rounded-2xl border p-4 transition-colors ${
+        recommended ? "border-accent/45 bg-accent/8" : "border-line bg-canvas/25"
       }`}
     >
       <div className="flex items-center gap-2.5">
@@ -55,7 +55,7 @@ function RoutePanel({
         <span className="text-xs font-semibold">{service.routeLabel}</span>
         <span className="truncate text-[11px] text-ink-3">{service.displayUrl}</span>
         {recommended && (
-          <span className="ml-auto inline-flex shrink-0 items-center gap-1 border border-accent/40 bg-accent-soft px-2 py-0.5 text-[10px] font-medium text-ink">
+          <span className="ml-auto inline-flex shrink-0 items-center gap-1 rounded-full bg-accent px-2 py-0.5 text-[10px] font-medium text-white">
             <BadgeCheck size={11} aria-hidden />
             {t.comparison.recommendedRoute}
           </span>
@@ -153,14 +153,14 @@ export function RouteComparison() {
         </div>
         <div className="min-w-0 flex-1">
           <p className="section-kicker mb-1">{t.workspace.routeAnalysis}</p>
-          <h2 className="text-sm font-semibold tracking-wide">{t.comparison.title}</h2>
+          <h2 className="text-sm font-semibold">{t.comparison.title}</h2>
           <p className="mt-0.5 text-[11px] text-ink-3">
             {hints.length > 0
               ? t.comparison.recommendation[hints[0]]
               : `Emby · ${t.comparison.globalRoute} / ${t.comparison.chinaRoute}`}
           </p>
         </div>
-        <span className="border border-line bg-soft px-3 py-1.5 text-xs font-medium text-ink-2">
+        <span className="rounded-full bg-soft px-3 py-1.5 text-xs font-medium text-ink-2">
           {t.comparison.recommendation[headline]}
         </span>
       </div>

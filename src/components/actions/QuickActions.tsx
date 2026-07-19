@@ -98,7 +98,7 @@ export function QuickActions() {
         <div className="module-icon grid size-9 place-items-center text-ink-2">
           <Zap size={16} aria-hidden />
         </div>
-        <h2 className="text-sm font-semibold tracking-wide">
+        <h2 className="text-sm font-semibold">
           {t.actions.quickActions}
         </h2>
       </div>

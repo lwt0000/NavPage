@@ -19,6 +19,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { CategoryKey } from "@/lib/types";
+import { springSnappy } from "@/lib/motion";
 import { t } from "@/locales/zh-CN";
 import { useDashboard } from "@/components/dashboard/DashboardProvider";
 import { useCategories } from "@/components/layout/useCategories";
@@ -221,10 +222,11 @@ export function CommandPalette() {
         >
           <motion.div
             className="glass-3 mx-auto mt-[10vh] w-full max-w-xl overflow-hidden p-0!"
-            initial={{ opacity: 0, y: -14, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 380, damping: 32 }}
+            initial={{ opacity: 0, y: -14, scale: 0.97, filter: "blur(6px)" }}
+            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -14, scale: 0.97, filter: "blur(6px)" }}
+            transition={springSnappy}
+            style={{ transformOrigin: "top center" }}
             role="dialog"
             aria-modal="true"
             aria-label={t.actions.search}
@@ -252,7 +254,7 @@ export function CommandPalette() {
               ref={listRef}
               id="palette-list"
               role="listbox"
-              className="max-h-[46vh] overflow-y-auto p-2"
+              className="max-h-[46vh] overflow-y-auto overscroll-contain p-2"
             >
               {items.length === 0 ? (
                 <p className="px-3 py-8 text-center text-sm text-ink-3">
@@ -282,7 +284,7 @@ export function CommandPalette() {
                           close();
                           item.perform();
                         }}
-                        className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors ${
+                        className={`pressable flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left ${
                           isActive ? "bg-accent-soft" : "hover:bg-ink/4"
                         }`}
                       >

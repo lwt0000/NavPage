@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type MouseEvent } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import {
@@ -21,6 +21,7 @@ import {
 import type { DashboardService } from "@/lib/types";
 import { t } from "@/locales/zh-CN";
 import { formatLatency, formatPercent, formatRelative } from "@/lib/format";
+import { springGesture, springSnappy } from "@/lib/motion";
 import { useDashboard } from "@/components/dashboard/DashboardProvider";
 import { useNow } from "@/components/ui/useNow";
 import { getServiceIcon } from "./service-icons";
@@ -136,34 +137,42 @@ function CardMenu({
         onClick={() => setOpen(!open)}
         aria-label={t.actions.more}
         aria-expanded={open}
-        className="rounded-lg p-1.5 text-ink-3 transition-colors hover:bg-ink/8 hover:text-ink"
+        className="icon-action rounded-lg p-1.5 text-ink-3 hover:bg-ink/8 hover:text-ink"
       >
         <EllipsisVertical size={15} aria-hidden />
       </button>
-      {open && (
-        <div
-          className={`glass-3 absolute right-0 z-50 w-44 p-1.5 ${dropUp ? "bottom-9" : "top-9"}`}
-        >
-          {items.map(({ key, label, icon: Icon, danger, action }) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => {
-                setOpen(false);
-                action();
-              }}
-              className={`flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-xs transition-colors ${
-                danger
-                  ? "text-crit hover:bg-crit/10"
-                  : "text-ink-2 hover:bg-ink/5 hover:text-ink"
-              }`}
-            >
-              <Icon size={13.5} aria-hidden />
-              {label}
-            </button>
-          ))}
-        </div>
-      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, filter: "blur(4px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, scale: 0.9, filter: "blur(4px)" }}
+            transition={springSnappy}
+            // the menu grows out of the ⋮ trigger that summoned it
+            style={{ transformOrigin: dropUp ? "bottom right" : "top right" }}
+            className={`glass-3 absolute right-0 z-50 w-44 p-1.5 ${dropUp ? "bottom-9" : "top-9"}`}
+          >
+            {items.map(({ key, label, icon: Icon, danger, action }) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => {
+                  setOpen(false);
+                  action();
+                }}
+                className={`pressable flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-xs ${
+                  danger
+                    ? "text-crit hover:bg-crit/10"
+                    : "text-ink-2 hover:bg-ink/5 hover:text-ink"
+                }`}
+              >
+                <Icon size={13.5} aria-hidden />
+                {label}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -262,17 +271,20 @@ export function ServiceCard({ service, onRequestDelete, index = 0 }: ServiceCard
             </h3>
             <p className="mt-0.5 truncate text-xs text-ink-3">{service.displayUrl}</p>
           </div>
-          <button
+          <motion.button
             type="button"
             onClick={() => toggleFavorite(service)}
             aria-label={t.a11y.toggleFavorite(service.name)}
             aria-pressed={service.favorite}
-            className={`rounded-lg p-1.5 transition-all hover:scale-110 ${
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.82 }}
+            transition={springGesture}
+            className={`rounded-lg p-1.5 transition-colors ${
               service.favorite ? "text-warn" : "text-ink-3 hover:text-ink-2"
             }`}
           >
             <Star size={15} fill={service.favorite ? "currentColor" : "none"} aria-hidden />
-          </button>
+          </motion.button>
           <CardMenu
             service={service}
             onRequestDelete={onRequestDelete}

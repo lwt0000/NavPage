@@ -50,18 +50,18 @@ export function OverallHealthGauge({ score, status, history, size = 196 }: Gauge
 
   return (
     <div
-      className="relative flex flex-col justify-between border border-line-strong bg-canvas/55 p-4"
+      className="relative flex flex-col justify-between rounded-2xl border border-line bg-canvas/40 p-4"
       style={{ width: size, height: size }}
       role="img"
       aria-label={t.a11y.healthGauge(score)}
     >
       <div className="flex items-start justify-between">
-        <span className="font-mono text-[9px] tracking-[0.12em] text-ink-3">{t.workspace.healthReadout}</span>
-        <span className="size-2" style={{ background: color }} aria-hidden />
+        <span className="text-[10px] font-medium text-ink-3">{t.workspace.healthReadout}</span>
+        <span className="size-2 rounded-full" style={{ background: color }} aria-hidden />
       </div>
       <div>
         <div className="flex items-end leading-none">
-          <span className="font-mono text-6xl font-medium tracking-[-0.09em] tabular-nums">
+          <span className="text-6xl font-semibold tracking-[-0.03em] tabular-nums">
             {display}
           </span>
           <span className="mb-1 ml-1 text-sm text-ink-3">%</span>
@@ -69,7 +69,7 @@ export function OverallHealthGauge({ score, status, history, size = 196 }: Gauge
         <div className="mt-2 text-[11px] text-ink-3">{t.header.overallHealth}</div>
       </div>
       <div>
-        <div className="mb-1 flex items-baseline justify-between font-mono text-[9px] tracking-[0.08em] text-ink-3">
+        <div className="mb-1 flex items-baseline justify-between text-[10px] text-ink-3">
           <span>{t.metrics.healthHistory}</span>
           <span>
             {samples.length > 0
@@ -82,14 +82,14 @@ export function OverallHealthGauge({ score, status, history, size = 196 }: Gauge
           {Array.from({ length: TREND_SLOTS - samples.length }, (_, i) => (
             <span
               key={`empty-${i}`}
-              className="flex-1"
+              className="flex-1 rounded-full"
               style={{ height: "16%", background: "var(--color-grid)" }}
             />
           ))}
           {samples.map((sample, i) => (
             <span
               key={sample.t}
-              className="flex-1 transition-all duration-300"
+              className="flex-1 rounded-full transition-all duration-300"
               title={`${formatRelative(sample.t, now)} · ${sample.score}%`}
               style={{
                 height: `${16 + (sample.score / 100) * 84}%`,

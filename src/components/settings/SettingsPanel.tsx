@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { LogOut, Moon, ShieldAlert, ShieldCheck, Sun } from "lucide-react";
+import { springSnappy } from "@/lib/motion";
 import { t } from "@/locales/zh-CN";
 import { useDashboard } from "@/components/dashboard/DashboardProvider";
 import { Modal } from "@/components/ui/Modal";
@@ -38,7 +40,7 @@ function SecuritySection() {
           <button
             type="button"
             onClick={logout}
-            className="mt-3 flex items-center gap-2 rounded-xl border border-crit/35 bg-crit/10 px-4 py-2 text-xs font-medium text-crit transition-colors hover:bg-crit/20"
+            className="pressable mt-3 flex items-center gap-2 rounded-xl border border-crit/35 bg-crit/10 px-4 py-2 text-xs font-medium text-crit hover:bg-crit/20"
           >
             <LogOut size={13} aria-hidden />
             {t.auth.logout}
@@ -64,23 +66,32 @@ function Switch({
   label: string;
 }) {
   return (
-    <button
+    <motion.button
       type="button"
       role="switch"
       aria-checked={checked}
       aria-label={label}
       onClick={() => onChange(!checked)}
-      className={`relative h-6 w-11 shrink-0 rounded-full border transition-colors ${
-        checked ? "border-accent bg-accent" : "border-line-strong bg-ink/10"
+      whileTap="pressed"
+      className={`flex h-6 w-11 shrink-0 touch-manipulation items-center rounded-full border px-0.5 transition-colors [-webkit-tap-highlight-color:transparent] ${
+        checked
+          ? "justify-end border-accent bg-accent"
+          : "justify-start border-line-strong bg-ink/10"
       }`}
     >
-      <span
-        className={`absolute top-0.5 size-4.5 rounded-full shadow-md transition-all ${
-          checked ? "left-[1.4rem] bg-canvas" : "left-0.5 bg-ink"
+      {/* knob stretches under the finger while pressed, anchored to the far
+          edge, then springs to the other side — the far edge hints where the
+          toggle is heading */}
+      <motion.span
+        layout
+        variants={{ pressed: { width: "1.35rem" } }}
+        transition={springSnappy}
+        className={`h-4.5 w-4.5 rounded-full shadow-md ${
+          checked ? "bg-canvas" : "bg-ink"
         }`}
         aria-hidden
       />
-    </button>
+    </motion.button>
   );
 }
 
@@ -132,7 +143,7 @@ export function SettingsPanel() {
                   role="radio"
                   aria-checked={selected}
                   onClick={() => updateSettings({ theme: value })}
-                  className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-medium transition-colors ${
+                  className={`pressable flex items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-medium ${
                     selected
                       ? "border-accent/50 bg-accent-soft text-ink"
                       : "border-line bg-soft text-ink-2 hover:border-line-strong hover:bg-soft-2"
@@ -168,7 +179,7 @@ export function SettingsPanel() {
                   role="radio"
                   aria-checked={selected}
                   onClick={() => updateSettings({ refreshIntervalSeconds: value })}
-                  className={`rounded-xl border px-3 py-2.5 text-xs font-medium transition-colors ${
+                  className={`pressable rounded-xl border px-3 py-2.5 text-xs font-medium ${
                     selected
                       ? "border-accent/50 bg-accent-soft text-ink"
                       : "border-line bg-soft text-ink-2 hover:border-line-strong hover:bg-soft-2"

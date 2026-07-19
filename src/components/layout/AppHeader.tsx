@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bell, Menu, Moon, Search, Settings, Sun } from "lucide-react";
+import { springSnappy } from "@/lib/motion";
 import { useDashboard } from "@/components/dashboard/DashboardProvider";
 import { MiniHealthRing } from "@/components/health/OverallHealthGauge";
 import { STATUS_META } from "@/components/services/status-meta";
@@ -137,10 +138,11 @@ function Notifications() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 6, scale: 0.98 }}
-            transition={{ duration: 0.18 }}
+            initial={{ opacity: 0, scale: 0.92, y: -4, filter: "blur(4px)" }}
+            animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, scale: 0.92, y: -4, filter: "blur(4px)" }}
+            transition={springSnappy}
+            style={{ transformOrigin: "top right" }}
             className="glass-3 absolute right-0 top-12 z-50 w-80 p-2"
           >
             <div className="px-3 py-2 text-xs font-medium text-ink-3">
@@ -201,7 +203,7 @@ function ThemeToggle() {
       type="button"
       onClick={() => updateSettings({ theme: isLight ? "dark" : "light" })}
       aria-label={isLight ? t.header.switchToDark : t.header.switchToLight}
-      className="control-button p-2.5 text-ink-2 transition-colors hover:text-ink"
+      className="control-button p-2.5 text-ink-2 transition-colors hover:text-ink max-sm:hidden"
     >
       {isLight ? <Moon size={16} aria-hidden /> : <Sun size={16} aria-hidden />}
     </button>
@@ -213,9 +215,18 @@ export function AppHeader({ onMenuClick }: { onMenuClick: () => void }) {
   const overall = snapshot?.overall ?? null;
   const status = overall?.status ?? "unknown";
   const StatusIcon = STATUS_META[status].icon;
+  // chrome materializes (blur, hairline, shadow) only once content scrolls under
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="app-header sticky top-0 z-40 border-b border-line shadow-header backdrop-blur-xl">
+    <header className="app-header sticky top-0 z-40" data-scrolled={scrolled}>
       <div className="mx-auto flex h-16 max-w-[1680px] items-center gap-3 px-4 sm:gap-4 lg:px-6">
         <button
           type="button"
@@ -228,7 +239,7 @@ export function AppHeader({ onMenuClick }: { onMenuClick: () => void }) {
 
         <Logo />
         <div className="min-w-0 leading-tight">
-          <h1 className="truncate text-[14px] font-semibold tracking-[0.04em]">
+          <h1 className="truncate text-[14px] font-semibold tracking-[-0.01em]">
             {t.app.title}
           </h1>
           <p className="hidden truncate text-[11px] text-ink-3 md:block">
@@ -265,7 +276,7 @@ export function AppHeader({ onMenuClick }: { onMenuClick: () => void }) {
         {overall && (
           <a
             href="#health-overview"
-            className="hidden items-center gap-2 px-2 py-1 transition-colors hover:bg-ink/4 sm:flex"
+            className="pressable hidden items-center gap-2 rounded-md px-2 py-1 hover:bg-ink/4 sm:flex"
             aria-label={t.a11y.healthGauge(overall.score)}
           >
             <MiniHealthRing score={overall.score} />
@@ -305,7 +316,7 @@ export function AppHeader({ onMenuClick }: { onMenuClick: () => void }) {
         </button>
 
         <div className="hidden items-center gap-2.5 border-l border-line pl-3 lg:flex">
-          <div className="grid size-8 place-items-center border border-accent/40 bg-accent-soft text-xs font-semibold text-accent">
+          <div className="grid size-8 place-items-center rounded-full bg-accent-soft text-xs font-semibold text-accent">
             {t.app.user.slice(0, 1)}
           </div>
           <div className="leading-tight">

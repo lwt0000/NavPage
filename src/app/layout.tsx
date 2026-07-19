@@ -8,7 +8,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0c0d0d",
+  themeColor: "#0a0a0c",
+  // edge-to-edge on notched phones; safe-area insets are handled per surface
+  viewportFit: "cover",
 };
 
 /**

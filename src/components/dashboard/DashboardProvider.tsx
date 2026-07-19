@@ -317,7 +317,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     }
     document
       .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", settings.theme === "light" ? "#efede7" : "#0c0d0d");
+      ?.setAttribute("content", settings.theme === "light" ? "#f5f5f7" : "#0a0a0c");
   }, [settingsLoaded, settings.theme]);
 
   /* ---------------- visibility-aware polling ---------------- */

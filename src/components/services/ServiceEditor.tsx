@@ -275,7 +275,7 @@ export function ServiceEditor() {
                     aria-checked={selected}
                     aria-label={name}
                     onClick={() => set("icon", name)}
-                    className={`grid size-9 place-items-center rounded-lg border transition-colors ${
+                    className={`pressable grid size-9 place-items-center rounded-lg border ${
                       selected
                         ? "border-accent/60 bg-accent-soft text-accent"
                         : "border-line bg-soft text-ink-3 hover:border-line-strong hover:text-ink-2"
@@ -382,7 +382,7 @@ export function ServiceEditor() {
           ).map(([key, label]) => (
             <label
               key={key}
-              className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-line bg-soft px-3 py-2.5 text-xs text-ink-2 transition-colors hover:border-line-strong hover:bg-soft-2"
+              className="pressable flex cursor-pointer items-center gap-2.5 rounded-xl border border-line bg-soft px-3 py-2.5 text-xs text-ink-2 hover:border-line-strong hover:bg-soft-2"
             >
               <input
                 type="checkbox"
@@ -400,14 +400,14 @@ export function ServiceEditor() {
           <button
             type="button"
             onClick={closeEditor}
-            className="rounded-xl border border-line bg-soft px-4 py-2 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:bg-soft-2 hover:text-ink"
+            className="pressable rounded-xl border border-line bg-soft px-4 py-2 text-xs font-medium text-ink-2 hover:border-line-strong hover:bg-soft-2 hover:text-ink"
           >
             {t.actions.cancel}
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="rounded-xl border border-accent/50 bg-accent-soft px-5 py-2 text-xs font-semibold text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-all hover:border-accent/70 hover:bg-accent/25 hover:shadow-[0_4px_20px_var(--color-accent-glow),inset_0_1px_0_rgba(255,255,255,0.12)] disabled:opacity-60"
+            className="pressable rounded-xl border border-accent/50 bg-accent-soft px-5 py-2 text-xs font-semibold text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] hover:border-accent/70 hover:bg-accent/25 hover:shadow-[0_4px_20px_var(--color-accent-glow),inset_0_1px_0_rgba(255,255,255,0.12)] disabled:opacity-60"
           >
             {t.actions.save}
           </button>

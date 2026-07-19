@@ -1,10 +1,11 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, type PanInfo } from "framer-motion";
 import { X } from "lucide-react";
 import { useDashboard } from "@/components/dashboard/DashboardProvider";
 import { RefreshIndicator } from "@/components/ui/RefreshIndicator";
 import { useLockBodyScroll } from "@/components/ui/useLockBodyScroll";
+import { project, spring } from "@/lib/motion";
 import { t } from "@/locales/zh-CN";
 import { useCategories } from "./useCategories";
 
@@ -34,19 +35,12 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
               }}
               aria-current={active ? "page" : undefined}
               data-active={active}
-              className={`nav-item group relative flex w-full items-center gap-3 px-3 py-2.5 text-left text-sm transition-all duration-200 ${
+              className={`nav-item group relative flex w-full items-center gap-3 px-3 py-2.5 text-left text-sm ${
                 active
                   ? ""
                   : "text-ink-2 hover:bg-soft hover:text-ink"
               }`}
             >
-              {/* narrow active indicator */}
-              <span
-                className={`absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-accent transition-opacity duration-200 ${
-                  active ? "opacity-100" : "opacity-0"
-                }`}
-                aria-hidden
-              />
               <Icon
                 size={16}
                 aria-hidden
@@ -55,7 +49,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
               <span className="flex-1 truncate font-medium">{label}</span>
               <span
                 className={`rounded-full px-2 py-0.5 text-[11px] tabular-nums ${
-                  active ? "bg-black/8 text-current" : "bg-ink/6 text-ink-3"
+                  active ? "bg-white/25 text-white" : "bg-ink/6 text-ink-3"
                 }`}
               >
                 {count}
@@ -81,6 +75,13 @@ interface SidebarProps {
 
 export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   useLockBodyScroll(mobileOpen);
+
+  // dismiss when the projected resting point is well past the edge — a flick
+  // toward the edge closes even from a small offset, a reverse flick cancels
+  const onDrawerDragEnd = (_: unknown, info: PanInfo) => {
+    if (info.offset.x + project(info.velocity.x) < -96) onClose();
+  };
+
   return (
     <>
       {/* desktop rail */}
@@ -103,14 +104,20 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
               aria-hidden
             />
             <motion.aside
-              className="glass-3 fixed inset-y-3 left-3 z-50 w-[17rem] overflow-hidden lg:hidden"
+              className="glass-3 drag-x-surface fixed inset-y-3 left-3 z-50 flex w-[17rem] flex-col overflow-hidden lg:hidden"
               role="dialog"
               aria-modal="true"
               aria-label={t.categories.all}
-              initial={{ x: -320, opacity: 0.6 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: -320, opacity: 0.6 }}
-              transition={{ type: "spring", stiffness: 360, damping: 36 }}
+              initial={{ x: -320 }}
+              animate={{ x: 0 }}
+              exit={{ x: -320 }}
+              transition={spring}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              // 1:1 back toward the edge it came from, rubber-band to the right
+              dragElastic={{ left: 1, right: 0.06 }}
+              dragTransition={{ bounceStiffness: 400, bounceDamping: 38 }}
+              onDragEnd={onDrawerDragEnd}
             >
               <div className="flex items-center justify-between px-4 pt-4">
                 <span className="text-sm font-semibold">{t.app.title}</span>
@@ -118,7 +125,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
                   type="button"
                   onClick={onClose}
                   aria-label={t.header.closeMenu}
-                  className="rounded-lg p-1.5 text-ink-2 hover:bg-ink/5 hover:text-ink"
+                  className="icon-action rounded-lg p-1.5 text-ink-2 hover:bg-ink/5 hover:text-ink"
                 >
                   <X size={16} aria-hidden />
                 </button>
